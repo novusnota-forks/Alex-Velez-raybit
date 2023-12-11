@@ -59,7 +59,7 @@ Memory Cells
 Memory Pointer
 ```
 
-Even more with `@`!
+## Even more with `@`!
 
 * Functions that require argument values will use the values in cells to the right of the current cell in the memory. For example, `InitWindow` requires 3 input values for `width`, `height`, and `title`, so in **Raybit**, calling the `InitWindow` function uses the 3 cell values to the right of the current cell in corresponding argument order. For `integers` and `booleans`, those values can be inputted into the corresponding cells normally, but for all other data types, such as `String` or `Color`, the cell value will actually represent a pointer to the cell where its information is held.
 
