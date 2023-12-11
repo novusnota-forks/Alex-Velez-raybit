@@ -18,7 +18,6 @@ No one asked for this. But... so in conclusion, this will advance the modern wor
 
 ## Commands
 
-All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
 |Command| Functionality |
 |:--:|--|
 | > | Increment the memory pointer (moving it to the right 1 cell). |
