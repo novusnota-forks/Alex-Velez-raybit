@@ -42,7 +42,7 @@ We will first move right and decrement the second cell to `-3`, since that value
 ```brainfuck
 > --- @
 ```
-```
+```brainfuck
 Memory Cells
 -------------
 [0][-3][0][0][0][0][0]
