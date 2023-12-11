@@ -30,7 +30,9 @@ All your files and folders are presented as a tree in the file explorer. You can
 | , | Accept one character of input, storing its ASCII value in the current cell. |
 | . | Output the character corresponding to the value at the current cell. |
 | @ | Calls a Raylib function, using the value at the current cell as an id. All Raylib functions are mapped in descending order according to the Raylib Cheat sheet starting at `-1`. "*cha cha real smooth!*"  |
-
+| ? | Prints the pointer and value at pointer cell to the console. |
+| # | Prints the entire current memory layout. |
+| ! | Stops the program. |
 
 ## More on `@`
 
