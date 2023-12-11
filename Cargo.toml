@@ -1,0 +1,19 @@
+[package]
+name = "raybit"
+version = "0.1.0"
+edition = "2021"
+authors = ["Alexander Velez <alexandervelez7245@gmail.com>"]
+description = "raylib in brainfuck!"
+#readme = "README.md"
+#repository = "https://github.com/Alex-Velez/???"
+license = "MIT"
+keywords = ["raylib", "brainfuck", "bindings"]
+categories = ["game"]
+
+[dependencies]
+raylib = "3.7.0"
+
+# start: 12-08-2023
+
+[features]
+debug = []
