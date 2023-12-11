@@ -39,7 +39,7 @@ The `@` command is really cool!
 * Functions that return values will also return the values to the left of the current cell in the memory. For example, the `WindowShouldClose` function returns a `bool`, so in **Raybit**, calling the  `WindowShouldClose` function returns the corresponding `boolean` value, (`1` or `0`), to the left of the current cell. 
 
 We will first move right and decrement the second cell to `-3`, since that value corresponds to `WindowShouldClose`. Then we can call the function.
-```bf
+```brainfuck
 > --- @
 ```
 ```
@@ -51,7 +51,7 @@ Memory Pointer
 ```
 
 If `WindowShouldClose` is triggered and returns `true`, then our memory layout will look like this:
-```bf
+```brainfuck
 Memory Cells
 -------------
 [1][-3][0][0][0][0][0]
@@ -64,7 +64,7 @@ Memory Pointer
 * Functions that require argument values will use the values in cells to the right of the current cell in the memory. For example, `InitWindow` requires 3 input values for `width`, `height`, and `title`, so in **Raybit**, calling the `InitWindow` function uses the 3 cell values to the right of the current cell in corresponding argument order. For `integers` and `booleans`, those values can be inputted into the corresponding cells normally, but for all other data types, such as `String` or `Color`, the cell value will actually represent a pointer to the cell where its information is held.
 
 For example, a `String` pointer will point to the first value of the string and will be null terminated. This example represents a string `ABC` being stored at the pointer value `3`.
-```bf
+```brainfuck
 Memory Cells
 -------------
 [0][1][2][3 ][4 ][5 ][6]
@@ -76,11 +76,11 @@ Memory Pointer
 We will first decrement the first cell to `-1`, since that value corresponds to `InitWindow`. Then we will move to the second, and third cells, and fill them up with the width and height that we want to pass in respectively. Then we move to the next cell to define the pointer for our title string. In this case, we will store the string at position `4`. We can then move to position `4` and begin filling in ASCII values into cells sequentially for our string (*remember, strings are null terminated*). Lastly, we can move back to the first cell and call the function.
 
 *In this example, I have used shorthand for brevity*:
-```bf
+```brainfuck
 - > +800 > +400 > +4 > +65 <<<< @
 ```
 *Real code*:
-```bf
+```brainfuck
 -
 >>++++++++++++++++++++[<++++++++++++
 ++++++++++++++++++++++++++++>-]>++++
@@ -89,7 +89,7 @@ We will first decrement the first cell to `-1`, since that value corresponds to 
 <<<< @
 ```
 At the end of our program, our memory layout will look like this:
-```bf
+```brainfuck
 Memory Cells
 -------------
 [-1][800][400][4][65][0]
@@ -101,7 +101,7 @@ Once `@` is called, it will initialize a `800x400` window with the title `A`.
 ## Example
 
 Here is a **Raybit** example for creating a basic window!
-```bf
+```brainfuck
 ->>+++++++++++++++++[<++++++++++++++++++++++++++++++++++++++++++++++++++>-]<++++++>>++++++++++++++++[<
 ++++++++++++++++++++++++++++++>-]<++>++++>>++++[<+++++++++++++++++++++++++++++>-]>+++++++[<+++++++++++
 ++++>-]>++++[<+++++++++++++++++++++++++++++>-]>+++++++++[<++++++++++++>-]>++++++++++[<++++++++++>-]<+>
@@ -127,7 +127,7 @@ Here is a **Raybit** example for creating a basic window!
 Pretty self-explanatory right?
 Just kidding! Here is a break down of the code with comments :)
 I'll warn you though, it's quite *vertical*! 
-```bf
+```brainfuck
 // cell 0 [-1]
 -
 
