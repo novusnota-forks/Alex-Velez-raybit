@@ -224,14 +224,14 @@ Therefore, the value of a denormalized `Float` is calculated as `v` where:
 `E = 1 – bias`
 `v = (–1)^s * M * 256^E`
 #### Special Values: `exp = [255]...[255]`
-* `frac = [0]...[0]`  $\rightarrow$ $v = \pm\infin$
+* `frac = [0]...[0]`  $\rightarrow$ $v = \pm\infty$
 * `frac ≠ [0]...[0]`  $\rightarrow$ $v = NaN$
 
 ### `Structs`:
-A `Struct` is simply defined as a collection of fields. It consists of an array containing its fields in order. The fields are a `Pointer` to the data, except for `Boolean` and `Uint8` as those can be stored in the field cell directly. Therefore, with the default word size, `2` (16-bit), all fields require `2` cells to store each `Pointer` or value.
+A `Struct` is simply defined as a collection of fields. It consists of an array containing its fields in order. The fields are a `Pointer` to the data, except for `Boolean` and `Uint8` as those can be stored in the field cells directly. Therefore, with the default word size, `2` (16-bit), all fields require `2` cells to store each `Pointer` or value.
 
 ### Pointers
-A `Pointer` in **BitBit** point to the cells where their respective information is held. The default word-size for **BitBit** is `2` or 16-bits. So pointers in **BitBit** actually require `2` cells to hold the value of the pointer that points to the cell where specific data is stored at.
+A `Pointer` in **BitBit** points to the cells where their respective information is held. The default word-size for **BitBit** is `2` or 16-bits. So pointers in **BitBit** actually require `2` cells to hold the value of the pointer that points to the cell where specific data is stored at.
 * This interpreter can be configured to run with different word-sizes.
 
 ## Raylib Function Map
@@ -253,14 +253,14 @@ So calling flip up, `+-`, with the current cell value at `15` will call the `Max
 ## Function Output
 In **BitBit**, functions that return values, will return those values to the left of the current cell in the memory. For example, the `WindowShouldClose` function returns a `bool`. So in **Raybit**, calling the  `WindowShouldClose` function returns the corresponding `Boolean` value, (`1` or `0`), to the left of the current cell. For all other data types, such as `String` or `Color`, their values are output in right-to-left order.
 
-We will first move right and decrement the second cell to `-3`, since that value corresponds to `WindowShouldClose`. Then we flip up with `+-`, since the `WindowShouldClose` function is in the `rcore` module.
+First we will move right and increment the second cell to `2`, since that value corresponds to `WindowShouldClose`. Then we flip up with `+-`, since the `WindowShouldClose` function is in the `rcore` module.
 ```brainfuck
-> --- +-
+> ++ +-
 ```
 ```brainfuck
 Memory Cells
 -------------
-[0][-3][0][0][0][0][0]
+[0][2][0][0][0][0][0]
     ^
 Memory Pointer
 ```
@@ -269,7 +269,7 @@ If `WindowShouldClose` is triggered and returns `true`, then our memory layout w
 ```brainfuck
 Memory Cells
 -------------
-[1][-3][0][0][0][0][0]
+[1][2][0][0][0][0][0]
     ^
 Memory Pointer
 ```
