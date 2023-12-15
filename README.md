@@ -77,16 +77,16 @@ Memory Pointer
 #### `Unsigned Integer`
 * `Uint8`:
 	* Bit-size: `8`
-	* Max: `256^1` = `255`
+	* Max: `256^1 - 1` = `255`
 * `Uint16`
 	* Bit-size: `16`
-	* Max: `256^2` = `65536`
+	* Max: `256^2 - 1` = `65535`
 * `Uint24`
 	* Bit-size: `24`
-	* Max: `256^3` = `16777216`
+	* Max: `256^3 - 1` = `16777215`
 * `Uint32`
 	* Bit-size: `32`
-	* Max: `256^4` = `4294967296`
+	* Max: `256^4 - 1` = `4294967295`
 
 The value of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding `256^n`.
 | `base-10`  | `256^0` | `256^1` | `256^2` | `256^3` | `256^4` |
@@ -109,16 +109,16 @@ Memory Pointer
 #### `Signed Integer`:
 * `Int8`:
 	* Bit-size: `8`
-	* Max: `256^1` = `127`
+	* Max: `((256^1) / 2) - 1` = `127`
 * `Int16`
 	* Bit-size: `16`
-	* Max: `256^2` = `32767`
+	* Max: `(256^2) / 2) - 1` = `32767`
 * `Int24`
 	* Bit-size: `24`
-	* Max: `256^3` = `8388607`
+	* Max: `(256^3) / 2) - 1` = `8388607`
 * `Int32`
 	* Bit-size: `32`
-	* Max: `256^4` = `2147483647`
+	* Max: `(256^4) / 2) - 1` = `2147483647`
 
 The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `unsigned` maximum value.
 | `base-10`   | `256^0` | `256^1` | `256^2` | `256^3` | `256^4` |
