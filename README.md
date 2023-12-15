@@ -13,7 +13,7 @@ This interpreter also includes 5 more commands for debugging purposes, `?`, `#`,
 ### Some Specifics
 * The memory strip is grown dynamically, thus you must "*explore*" a cell before it can be accessed.
 * This interpreter implements a looping memory pointer (*decrementing from cell 0 to the last cell, or incrementing from the last cell to cell 0`*).
-* This interpreter includes single-line comments with `\\`.
+* This interpreter includes single-line comments with `//`.
 * `Panic!` occurs when trying to access invalid memory or an invalid function.
 
 ## Why is Raybit?
