@@ -20,7 +20,6 @@ This interpreter also includes 5 more commands for debugging purposes, `?`, `#`,
 No one asked for this. But... so in conclusion, this will advance the modern world beyond human comprehension!
 
 ## Commands
-All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
 | Command | Functionality                                                                                 |
 | :-----: | :-------------------------------------------------------------------------------------------- |
 |   `>`   | Increment the memory pointer (moving it to the right 1 cell).                                 |
@@ -98,6 +97,7 @@ The value of an `Unsigned Integer` to a decimal base is calculated by the sum of
 | 65545      | 9       | 0       | 1       | 0       | 0       |
 | 234897     | 145     | 149     | 3       | 0       | 0       |
 | 4295098368 | 0       | 0       | 2       | 0       | 1       |
+
 A `Uint16` value of `65545` at pointer position `2`.
 ```brainfuck
 Memory Cells
@@ -130,6 +130,7 @@ The value of a negative `Signed Integer` to a decimal base is calculated by addi
 | -65545      | 247     | 255     | 254     | 255     | 255     |
 | -234897     | 111     | 106     | 252     | 255     | 255     |
 | -4295098368 | 0       | 0       | 254     | 255     | 254     |
+
 A `Int16` value of `-65545` at pointer position `1`.
 ```brainfuck
 Memory Cells
