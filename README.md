@@ -525,3 +525,9 @@ I'll warn you though, it's quite *vertical*!
 // cell 14 [1] : call CloseWindow()
 @+-
 ```
+
+#### Why the fuck is your README so long?
+
+>If only github provided a place in the repository to lay out the roadmap of my project, show the current status, and document the software better
+
+¯\\_\_(ツ)__/¯
