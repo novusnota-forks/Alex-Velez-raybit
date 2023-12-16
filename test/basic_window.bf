@@ -116,7 +116,7 @@
 <<<<<<<<<< <<<<<<<<<<
 <<<<<<<<<< <<<<<<<<<<
 <<<<<<<<<< <<<<<
-@+-
+|+-|
 
 // cell 14 [55] : BeginDrawing() ID
 >>>>>>>>>> >>>>
@@ -136,26 +136,26 @@
     //==================================================================================
 
     // cell 14 [55] : call BeginDrawing()
-    @+-
+    |+-|
 
     // cell 14 [54] : ClearBackground() ID
     -
 
     // cell 14 [54] : call ClearBackground()
-    @+-
+    |+-|
 
     // cell 25 [117] : DrawText() ID
     >>>>>>>>>> >
 
     // cell 25 [117] : call DrawText()
-    @<>
+    |<>|
 
     // cell 14 [56] : EndDrawing() ID
     <<<<<<<<<< <
     ++
-    
+
     // cell 14 [56] : call EndDrawing()
-    @+-
+    |+-|
 
     //==================================================================================
     // Detect window close button or ESC key
@@ -167,7 +167,7 @@
     ---------- ----
 
     // cell 14 [2] : call WindowShouldClose()
-    @+-
+    |+-|
 
     // cell 13 [0/1] : WindowShouldClose() output
     <
@@ -207,4 +207,4 @@
 +
 
 // cell 14 [1] : call CloseWindow()
-@+-
+|+-|

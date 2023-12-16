@@ -8,10 +8,18 @@ def minify(rbf_file, new_file):
         line = line.strip()
         if not line.startswith("//"):
             no_comment_file.append(line)
+    count = 0
     for line in no_comment_file:
         for c in line:
-            if c in "<>+-.,[]":
-                f.write(c);
+            if count >= 98:
+                f.write('\n');
+                count = 0
+            if c in "<>+-.,[]|":
+                if c == '|':
+                    f.write(' ');
+                else:
+                    f.write(c);
+                count += 1
     file.close()
     f.close()
     
@@ -97,7 +105,6 @@ def text_to_bf(text):
         code = rbf_gen(x)
         print(code)
 
-
 args = sys.argv
 match len(args):
     case 4:
@@ -151,5 +158,4 @@ match len(args):
                 print("try 'commands'.")
     case _:
         print("Incorrect arg amount!")
-        exit()   
-            
+        exit()

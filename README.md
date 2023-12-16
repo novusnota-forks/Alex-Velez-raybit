@@ -8,12 +8,13 @@ The official (*non-official*) **Brainfuck** bindings for **Raylib**!
 
 **Raybit**, or also known as **Rayfuck**, is simply the bindings for **Raylib** in **BitBit**.
 
-This interpreter also includes 5 more commands for debugging purposes, `?`, `#`, `!`, `{`, `}`.
+This interpreter also includes 7 more commands for debugging purposes, `?`, `#`, `$`, `!`, `{`, `}`, `|`.
 
 ### Some Specifics
 * The memory strip is grown dynamically, thus you must "*explore*" a cell before it can be accessed.
 * This interpreter implements a looping memory pointer (*decrementing from cell 0 to the last cell, or incrementing from the last cell to cell 0`*).
 * This interpreter includes single-line comments with `//`.
+* A <code>&nbsp;</code> (*space*) or `|` character can be used to space commands for the interpreter.
 * `Panic!` occurs when trying to access invalid memory or an invalid function.
 
 ## Why is Raybit?
@@ -25,7 +26,7 @@ No one asked for this. But... so in conclusion, this will advance the modern wor
 |   `>`   | Increment the memory pointer (moving it to the right 1 cell).                                 |
 |   `<`   | Decrement the memory pointer (moving it to the left 1 cell). "*take it back now y'all!*".     |
 |   `+`   | Increment the value stored at the current cell. "*one hop this time!*"                        |
-|    -    | Decrement the value stored at the current cell.                                               |
+|   `-`   | Decrement the value stored at the current cell.                                               |
 |   `[`   | If the current cell value is zero, then jump forward to the matching `]`.                     |
 |   `]`   | If the current cell value is nonzero, then jump back to the matching `[`.                     |
 |   `,`   | Accept one character of input, storing its ASCII value in the current cell.                   |
@@ -35,11 +36,13 @@ No one asked for this. But... so in conclusion, this will advance the modern wor
 |  `<>`   | Flip left! Calls `rtextures` & `rtext` functions.                                             |
 |  `><`   | Flip right! Calls an `raudio` function.                                                       |
 |   `?`   | Prints the pointer and value at current cell to the console.                                  |
-|   `#`   | Prints the entire current memory layout.                                                      |
+|   `#`   | Prints the entire current memory layout horizontally.                                         |
+|   `$`   | Prints the entire current memory layout vertically.                                           |
 |   `!`   | Stops the program.                                                                            |
 |  `//`   | Single-line comment.                                                                          |
 |   `{`   | Begin multi-line comment.                                                                     |
 |   `}`   | End multi-line comment.                                                                       |
+|  `\|`   | Spacer. Used to space commands for parser                                                     |
 
 ## BitBit Data Types
 In strip memory, all data types must somehow be represented using only an array of unsigned 8-bit integers. So to fix this, **BitBit** uses separate models for different types of data.
@@ -71,7 +74,7 @@ Memory Pointer
 ```
 
 ### `Integer`:
-`Integer` is actually a class of several types defining an `Integer` of varying byte-sizes. **BitBit** uses base-256 to represent an `Integer`. `signed` types use signed 2's complement. `Integer` is stored in big endian order, left-to-right.
+`Integer` is actually a class of several types defining an `Integer` of varying byte-sizes. **BitBit** uses `base-256` to represent an `Integer`. `Signed` types use signed 2's complement. `Integer` is stored in big endian order, left-to-right.
 
 #### `Unsigned Integer`
 * `Uint8`:
@@ -120,7 +123,7 @@ Memory Pointer
 	* Bit-size: `32`
 	* Max: `(256^4) / 2) - 1` = `2147483647`
 
-The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `unsigned` maximum value.
+The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `Unsigned` maximum value.
 | `base-10`   | `256^0` | `256^1` | `256^2` | `256^3` | `256^4` |
 | :---------- | :------ | :------ | :------ | :------ | :------ |
 | 0           | 0       | 0       | 0       | 0       | 0       |
@@ -145,12 +148,12 @@ the form `v = x * 2^y`. `Float` is useful for performing computations involving 
 more generally as an approximation to real arithmetic. `Float` vaguely models the `IEEE 754` standard.
 
 ##### Numerical Form: `(-1)^s * M * 256^E`  
-* Sign bit `s` determines whether number is negative or positive  
+* Sign byte `s` determines whether number is negative or positive  
 * Significand `M` normally a fractional value in range `[1.0, 2.0)`
 * Exponent `E` weights value by power of `2`
 
 ##### Encoding:  
-* `s` is sign bit `s`  
+* `s` is sign byte `s`  
 * `exp` field encodes `E`  (but is not equal to `E`)  
 * `frac` field encodes `M` (but is not equal to `M`)
 
@@ -307,11 +310,31 @@ Once `+-` is called, it will initialize a `800x400` window with the title `A`.
 
 Here is a **Raybit** example for creating a basic window!
 ```brainfuck
->>++++++++[<+++++++++++>-]+++>>+++++++++++++++[<+++++++++++++++>-]<+>+>+++++++>>>+++++++++[<+++++++++++++>-]<->>+++++++[<+++++++++++++++>-]>+++++++++[<+++++++++++++>-]<->>+++++++++[<++++++++++++>-]>++++++++++[<++++++++++>-]<+>>>>+++++[<+++++++++++>-]>++++[<++++>-]<+>>>+++++[<+++++>-]>+++++[<+++++>-]>+++++[<+++++>-]>+++++++++++++++[<+++++++++++++++++>-]>++++++++++[<++++++++++++++++++++>-]>++++++++++[<++++++++++++++++++++>-]>++++++++++[<++++++++++++++++++++>-]>+++++++++++++++[<+++++++++++++++++>-]>+++++++++[<+++++++++++++>-]>+++++[<+++++++>-]>>++++++++++[<+++++++++++++++++++>-]>>++++++++++[<++++++++++++++++++++>-]>>++++[<+++++>-]>+++[<+++++++>-]>>++++++[<+++++++++++>-]<+>>++++++++++[<+++++++++++>-]<+>>++++++++++[<+++++++++++>-]>++++++++[<+++++++++++++>-]<->>++++++[<+++++++++++++++++++>-]>++++++++[<++++++++++++>-]<+>>+++++++++[<+++++++++++++>-]<->>+++++++++[<+++++++++++++>-]<-->>+++[<+++++++++++>-]>++++[<++++++++>-]>+++++++++[<++++++++++>-]<->>++++++++++[<+++++++++++>-]<+>>+++++++++[<+++++++++++++>-]>++++[<++++++++>-]>+++++++++[<+++++++++++>-]>++++++[<+++++++++++++++++++>-]>++++++++++[<++++++++++>-]<+>>++++++++[<++++++++++++>-]<+>>+++++++++[<+++++++++++++>-]<->>++++++++++[<++++++++++>-]<+>>++++++++++[<++++++++++>-]>++++[<++++++++>-]>+++++++++++[<+++++++++++>-]>++++++++++[<+++++++++++>-]<+>>+++++++++[<+++++++++++++>-]>++++++[<+++++++++++++++++++>-]>++++[<++++++++>-]>++++++[<+++++++++++++++++>-]>+++++++[<+++++++++++++++>-]>++++++[<+++++++++++++++++++>-]>+++++++++[<+++++++++++++>-]<-->>+++++++++[<+++++++++++++>-]<->>++++[<++++++++>-]>+++++++[<+++++++++++++++++>-]>+++++++[<+++++++++++++++>-]>++++++++++[<+++++++++++>-]>++++++++++[<++++++++++>-]>++++++++++[<+++++++++++>-]<+>>+++++++[<+++++++++++++++++>-]>+++[<+++++++++++>-]<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<+->>>>>>>>>>>>>>[+--+->>>>>>>>>>><><<<<<<<<<<<+++-------------------------------------------------------+-<-[>+++++++++++++++++++++++++++++++++++++++++++++++++++++++<+]>--]++-
+>>++++++++[<+++++++++++>-]+++>>+++++++++++++++[<+++++++++++++++>-]<+>+>+++++++>>>+++++++++[<++++++
++++++++>-]<->>+++++++[<+++++++++++++++>-]>+++++++++[<+++++++++++++>-]<->>+++++++++[<++++++++++++>-
+]>++++++++++[<++++++++++>-]<+>>>>+++++[<+++++++++++>-]>++++[<++++>-]<+>>>+++++[<+++++>-]>+++++[<++
++++>-]>+++++[<+++++>-]>+++++++++++++++[<+++++++++++++++++>-]>++++++++++[<++++++++++++++++++++>-]>+
++++++++++[<++++++++++++++++++++>-]>++++++++++[<++++++++++++++++++++>-]>+++++++++++++++[<++++++++++
++++++++>-]>+++++++++[<+++++++++++++>-]>+++++[<+++++++>-]>>++++++++++[<+++++++++++++++++++>-]>>++++
+++++++[<++++++++++++++++++++>-]>>++++[<+++++>-]>+++[<+++++++>-]>>++++++[<+++++++++++>-]<+>>+++++++
++++[<+++++++++++>-]<+>>++++++++++[<+++++++++++>-]>++++++++[<+++++++++++++>-]<->>++++++[<++++++++++
++++++++++>-]>++++++++[<++++++++++++>-]<+>>+++++++++[<+++++++++++++>-]<->>+++++++++[<+++++++++++++>
+-]<-->>+++[<+++++++++++>-]>++++[<++++++++>-]>+++++++++[<++++++++++>-]<->>++++++++++[<+++++++++++>-
+]<+>>+++++++++[<+++++++++++++>-]>++++[<++++++++>-]>+++++++++[<+++++++++++>-]>++++++[<+++++++++++++
+++++++>-]>++++++++++[<++++++++++>-]<+>>++++++++[<++++++++++++>-]<+>>+++++++++[<+++++++++++++>-]<->
+>++++++++++[<++++++++++>-]<+>>++++++++++[<++++++++++>-]>++++[<++++++++>-]>+++++++++++[<+++++++++++
+>-]>++++++++++[<+++++++++++>-]<+>>+++++++++[<+++++++++++++>-]>++++++[<+++++++++++++++++++>-]>++++[
+<++++++++>-]>++++++[<+++++++++++++++++>-]>+++++++[<+++++++++++++++>-]>++++++[<+++++++++++++++++++>
+-]>+++++++++[<+++++++++++++>-]<-->>+++++++++[<+++++++++++++>-]<->>++++[<++++++++>-]>+++++++[<+++++
+++++++++++++>-]>+++++++[<+++++++++++++++>-]>++++++++++[<+++++++++++>-]>++++++++++[<++++++++++>-]>+
++++++++++[<+++++++++++>-]<+>>+++++++[<+++++++++++++++++>-]>+++[<+++++++++++>-]<<<<<<<<<<<<<<<<<<<<
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< +- >>>>>>>>>>>>>>[ +- - +- >>>>>>>>>>> <> 
+<<<<<<<<<<<++ +- ------------------------------------------------------ +- <-[>+++++++++++++++++++
+++++++++++++++++++++++++++++++++++++<+]>--]+ +- 
 ```
 Pretty self-explanatory right?
 Just kidding! Here is a break down of the code with comments :)
-Here I use the `@` character to signify when a flip is being triggered.
+Here I use surround flips with the `|` character to signify a command trigger.
 I'll warn you though, it's quite *vertical*! 
 ```brainfuck
 //==================================================================================
@@ -432,7 +455,7 @@ I'll warn you though, it's quite *vertical*!
 <<<<<<<<<< <<<<<<<<<<
 <<<<<<<<<< <<<<<<<<<<
 <<<<<<<<<< <<<<<
-@+-
+|+-|
 
 // cell 14 [55] : BeginDrawing() ID
 >>>>>>>>>> >>>>
@@ -452,26 +475,26 @@ I'll warn you though, it's quite *vertical*!
     //==================================================================================
 
     // cell 14 [55] : call BeginDrawing()
-    @+-
+    |+-|
 
     // cell 14 [54] : ClearBackground() ID
     -
 
     // cell 14 [54] : call ClearBackground()
-    @+-
+    |+-|
 
     // cell 25 [117] : DrawText() ID
     >>>>>>>>>> >
 
     // cell 25 [117] : call DrawText()
-    @<>
+    |<>|
 
     // cell 14 [56] : EndDrawing() ID
     <<<<<<<<<< <
     ++
-    
+
     // cell 14 [56] : call EndDrawing()
-    @+-
+    |+-|
 
     //==================================================================================
     // Detect window close button or ESC key
@@ -483,7 +506,7 @@ I'll warn you though, it's quite *vertical*!
     ---------- ----
 
     // cell 14 [2] : call WindowShouldClose()
-    @+-
+    |+-|
 
     // cell 13 [0/1] : WindowShouldClose() output
     <
@@ -523,11 +546,11 @@ I'll warn you though, it's quite *vertical*!
 +
 
 // cell 14 [1] : call CloseWindow()
-@+-
+|+-|
 ```
 
 #### Why the fuck is your README so long?
 
->If only github provided a place in the repository to lay out the roadmap of my project, show the current status, and document the software better
+>If only github provided a place in the repository to lay out the roadmap of my project, show the current status, and document the software better... oh well!
 
 ¯\\_\_(ツ)__/¯
