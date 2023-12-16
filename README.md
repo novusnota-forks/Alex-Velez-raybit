@@ -334,7 +334,7 @@ Here is a **Raybit** example for creating a basic window!
 ```
 Pretty self-explanatory right?
 Just kidding! Here is a break down of the code with comments :)
-Here I use surround flips with the `|` character to signify a command trigger.
+Here I surround flips with the `|` character to signify a command trigger.
 I'll warn you though, it's quite *vertical*! 
 ```brainfuck
 //==================================================================================
