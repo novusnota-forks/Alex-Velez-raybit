@@ -236,6 +236,7 @@ pub fn get_input_cells(memory: &mut Vec<BaseType>, pointer: usize, cells: usize)
 
 /// Read String at pointer position x in memory
 pub fn get_string(memory: &mut Vec<BaseType>, str_ptr: usize) -> std::ffi::CString {
+    // [A-z]...[0]
     // read string array starting at str_ptr to null
     let mut str_bytes: Vec<BaseType> = Vec::new();
     let mut x = 0;
@@ -248,10 +249,10 @@ pub fn get_string(memory: &mut Vec<BaseType>, str_ptr: usize) -> std::ffi::CStri
     }
 
     // turn string vec (i32) into string bytes (u8)
-    let ascii_bytes: Vec<u8> = str_bytes.iter().map(|&x| x as u8).collect();
+    // let ascii_bytes: Vec<u8> = str_bytes.iter().map(|&x| x as u8).collect();
 
     // turn string bytes into String
-    let ascii_str: String = String::from_utf8_lossy(&ascii_bytes).to_string();
+    let ascii_str: String = String::from_utf8_lossy(&str_bytes).to_string();
 
     // turn string into C string
     let c_str = std::ffi::CString::new(ascii_str).unwrap();
@@ -262,17 +263,33 @@ pub fn get_string(memory: &mut Vec<BaseType>, str_ptr: usize) -> std::ffi::CStri
 
 /// Read Color at pointer position x in memory
 pub fn get_color(memory: &mut Vec<BaseType>, color_ptr: usize) -> raylib::ffi::Color {
-    let mut color_bytes: [BaseType; 4] = [0, 0, 0, 0];
-    for x in 0..4 {
-        color_bytes[x] = memory[color_ptr + x];
+    // [r][g][b][a]
+    raylib::ffi::Color {
+        r: memory[color_ptr],
+        g: memory[color_ptr + 1],
+        b: memory[color_ptr + 2],
+        a: memory[color_ptr + 3],
     }
-    let color = raylib::ffi::Color {
-        r: color_bytes[0],
-        g: color_bytes[1],
-        b: color_bytes[2],
-        a: color_bytes[3],
-    };
-    return color;
+}
+
+/// Read Image at pointer position x in memory
+pub fn get_image(memory: &mut Vec<BaseType>, image_ptr: usize) -> raylib::ffi::Image {
+    // [width][width][height][height][mipmaps][mipmaps][format][format][data]...[r][g][b][a]
+    let width = crate::cells_to_unsigned_u16(&memory[image_ptr..(image_ptr + 2)]);
+    let height = crate::cells_to_unsigned_u16(&memory[(image_ptr + 2)..(image_ptr + 4)]);
+    let mipmaps = crate::cells_to_unsigned_u16(&memory[(image_ptr + 4)..(image_ptr + 6)]);
+    let format = crate::cells_to_unsigned_u16(&memory[(image_ptr + 6)..(image_ptr + 8)]);
+    let mut data: Vec<u8> = Vec::new();
+    for x in 0..(width * height * 4) as usize {
+        data.push(memory[image_ptr + 8 + x]);
+    }
+    raylib::ffi::Image {
+        data: data.as_mut_ptr() as *mut std::ffi::c_void,
+        width: width as i32,
+        height: height as i32,
+        mipmaps: mipmaps as i32,
+        format: format as i32,
+    }
 }
 
 /// Convert array of cells to unisgned integer
@@ -282,6 +299,10 @@ pub fn cells_to_unsigned(cells: &[BaseType]) -> usize {
         num += *val as usize * (BaseType::MAX as usize + 1).pow(x as u32);
     }
     num
+}
+
+pub const fn cells_to_unsigned_u16(cells: &[BaseType]) -> u16 {
+    cells[0] as u16 + (cells[1] as u16 * 256)
 }
 
 /// Read file from command line arguments

@@ -1,73 +1,79 @@
 use crate::BaseType;
 
+const FN_COUNT: usize = 66;
+const FN_MAP: [unsafe fn(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>>;
+    FN_COUNT] = [
+    init_audio_device,
+    close_audio_device,
+    is_audio_device_ready,
+    set_master_volume,
+    get_master_volume,
+    load_wave,
+    load_wave_from_memory,
+    is_wave_ready,
+    load_sound,
+    load_sound_from_wave,
+    load_sound_alias,
+    is_sound_ready,
+    update_sound,
+    unload_wave,
+    unload_sound,
+    unload_sound_alias,
+    export_wave,
+    export_wave_as_code,
+    play_sound,
+    stop_sound,
+    pause_sound,
+    resume_sound,
+    is_sound_playing,
+    set_sound_volume,
+    set_sound_pitch,
+    set_sound_pan,
+    wave_copy,
+    wave_crop,
+    wave_format,
+    load_wave_samples,
+    unload_wave_samples,
+    load_music_stream,
+    load_music_stream_from_memory,
+    is_music_ready,
+    unload_music_stream,
+    play_music_stream,
+    is_music_stream_playing,
+    update_music_stream,
+    stop_music_stream,
+    pause_music_stream,
+    resume_music_stream,
+    seek_music_stream,
+    set_music_volume,
+    set_music_pitch,
+    set_music_pan,
+    get_music_time_length,
+    get_music_time_played,
+    load_audio_stream,
+    is_audio_stream_ready,
+    unload_audio_stream,
+    update_audio_stream,
+    is_audio_stream_processed,
+    play_audio_stream,
+    pause_audio_stream,
+    resume_audio_stream,
+    is_audio_stream_playing,
+    stop_audio_stream,
+    set_audio_stream_volume,
+    set_audio_stream_pitch,
+    set_audio_stream_pan,
+    set_audio_stream_buffer_size_default,
+    set_audio_stream_callback,
+    attach_audio_stream_processor,
+    detach_audio_stream_processor,
+    attach_audio_mixed_processor,
+    detach_audio_mixed_processor,
+];
+
 pub unsafe fn call(memory: &mut Vec<BaseType>, pointer: usize) {
-    if let Some(result_cells) = match memory[pointer] {
-        0 => init_audio_device(),
-        1 => close_audio_device(),
-        2 => is_audio_device_ready(),
-        3 => set_master_volume(memory, pointer),
-        4 => get_master_volume(),
-        5 => load_wave(memory, pointer),
-        6 => load_wave_from_memory(memory, pointer),
-        7 => is_wave_ready(memory, pointer),
-        8 => load_sound(memory, pointer),
-        9 => load_sound_from_wave(memory, pointer),
-        10 => load_sound_alias(memory, pointer),
-        11 => is_sound_ready(memory, pointer),
-        12 => update_sound(memory, pointer),
-        13 => unload_wave(memory, pointer),
-        14 => unload_sound(memory, pointer),
-        15 => unload_sound_alias(memory, pointer),
-        16 => export_wave(memory, pointer),
-        17 => export_wave_as_code(memory, pointer),
-        18 => play_sound(memory, pointer),
-        19 => stop_sound(memory, pointer),
-        20 => pause_sound(memory, pointer),
-        21 => resume_sound(memory, pointer),
-        22 => is_sound_playing(memory, pointer),
-        23 => set_sound_volume(memory, pointer),
-        24 => set_sound_pitch(memory, pointer),
-        25 => set_sound_pan(memory, pointer),
-        26 => wave_copy(memory, pointer),
-        27 => wave_crop(memory, pointer),
-        28 => wave_format(memory, pointer),
-        29 => load_wave_samples(memory, pointer),
-        30 => unload_wave_samples(memory, pointer),
-        31 => load_music_stream(memory, pointer),
-        32 => load_music_stream_from_memory(memory, pointer),
-        33 => is_music_ready(memory, pointer),
-        34 => unload_music_stream(memory, pointer),
-        35 => play_music_stream(memory, pointer),
-        36 => is_music_stream_playing(memory, pointer),
-        37 => update_music_stream(memory, pointer),
-        38 => stop_music_stream(memory, pointer),
-        39 => pause_music_stream(memory, pointer),
-        40 => resume_music_stream(memory, pointer),
-        41 => seek_music_stream(memory, pointer),
-        42 => set_music_volume(memory, pointer),
-        43 => set_music_pitch(memory, pointer),
-        44 => set_music_pan(memory, pointer),
-        45 => get_music_time_length(memory, pointer),
-        46 => get_music_time_played(memory, pointer),
-        47 => load_audio_stream(memory, pointer),
-        48 => is_audio_stream_ready(memory, pointer),
-        49 => unload_audio_stream(memory, pointer),
-        50 => update_audio_stream(memory, pointer),
-        51 => is_audio_stream_processed(memory, pointer),
-        52 => play_audio_stream(memory, pointer),
-        53 => pause_audio_stream(memory, pointer),
-        54 => resume_audio_stream(memory, pointer),
-        55 => is_audio_stream_playing(memory, pointer),
-        56 => stop_audio_stream(memory, pointer),
-        57 => set_audio_stream_volume(memory, pointer),
-        58 => set_audio_stream_pitch(memory, pointer),
-        59 => set_audio_stream_pan(memory, pointer),
-        60 => set_audio_stream_buffer_size_default(memory, pointer),
-        61 => set_audio_stream_callback(memory, pointer),
-        62 => attach_audio_stream_processor(memory, pointer),
-        63 => detach_audio_stream_processor(memory, pointer),
-        64 => attach_audio_mixed_processor(memory, pointer),
-        65 => detach_audio_mixed_processor(memory, pointer),
+    if let Some(result_cells) = match memory[pointer] as usize {
+        id if id <= FN_COUNT => FN_MAP[id](memory, pointer),
         _ => None,
     } {
         for x in 1..=result_cells.len() {
@@ -77,19 +83,25 @@ pub unsafe fn call(memory: &mut Vec<BaseType>, pointer: usize) {
 }
 
 /// Initialize audio device and context
-unsafe fn init_audio_device() -> Option<Vec<BaseType>> {
+unsafe fn init_audio_device(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::InitAudioDevice();
     None
 }
 
 /// Close the audio device and context
-unsafe fn close_audio_device() -> Option<Vec<BaseType>> {
+unsafe fn close_audio_device(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::CloseAudioDevice();
     None
 }
 
 /// Check if audio device has been initialized successfully
-unsafe fn is_audio_device_ready() -> Option<Vec<BaseType>> {
+unsafe fn is_audio_device_ready(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::IsAudioDeviceReady();
     None
 }
@@ -100,7 +112,7 @@ unsafe fn set_master_volume(memory: &mut Vec<BaseType>, pointer: usize) -> Optio
 }
 
 /// Get master volume (listener)
-unsafe fn get_master_volume() -> Option<Vec<BaseType>> {
+unsafe fn get_master_volume(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::GetMasterVolume()");
 }
 

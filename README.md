@@ -14,35 +14,35 @@ This interpreter also includes 7 more commands for debugging purposes, `?`, `#`,
 * The memory strip is grown dynamically, thus you must "*explore*" a cell before it can be accessed.
 * This interpreter implements a looping memory pointer (*decrementing from cell 0 to the last cell, or incrementing from the last cell to cell 0`*).
 * This interpreter includes single-line comments with `//`.
-* A <code>&nbsp;</code> (*space*) or `|` character can be used to space commands for the interpreter.
+* A <code>&nbsp;</code> (*space*) or `|` character can be used to seperate commands for the interpreter.
 * `Panic!` occurs when trying to access invalid memory or an invalid function.
 
 ## Why is Raybit?
 No one asked for this. But... so in conclusion, this will advance the modern world beyond human comprehension!
 
 ## Commands
-| Command | Functionality                                                                                 |
-| :-----: | :-------------------------------------------------------------------------------------------- |
-|   `>`   | Increment the memory pointer (moving it to the right 1 cell).                                 |
-|   `<`   | Decrement the memory pointer (moving it to the left 1 cell). "*take it back now y'all!*".     |
-|   `+`   | Increment the value stored at the current cell. "*one hop this time!*"                        |
-|   `-`   | Decrement the value stored at the current cell.                                               |
-|   `[`   | If the current cell value is zero, then jump forward to the matching `]`.                     |
-|   `]`   | If the current cell value is nonzero, then jump back to the matching `[`.                     |
-|   `,`   | Accept one character of input, storing its ASCII value in the current cell.                   |
-|   `.`   | Output the character corresponding to the value at the current cell. "*cha cha real smooth!*" |
-|  `+-`   | Flip up! Calls an `rcore` function.                                                           |
-|  `-+`   | Flip down! Calls `rshapes` & `rmodels` functions.                                             |
-|  `<>`   | Flip left! Calls `rtextures` & `rtext` functions.                                             |
-|  `><`   | Flip right! Calls an `raudio` function.                                                       |
-|   `?`   | Prints the pointer and value at current cell to the console.                                  |
-|   `#`   | Prints the entire current memory layout horizontally.                                         |
-|   `$`   | Prints the entire current memory layout vertically.                                           |
-|   `!`   | Stops the program.                                                                            |
-|  `//`   | Single-line comment.                                                                          |
-|   `{`   | Begin multi-line comment.                                                                     |
-|   `}`   | End multi-line comment.                                                                       |
-|  `\|`   | Spacer. Used to space commands for parser                                                     |
+| Command | Functionality                                                               |
+| :-----: | :-------------------------------------------------------------------------- |
+|   `>`   | Increment the memory pointer (moving it to the right 1 cell).               |
+|   `<`   | Decrement the memory pointer (moving it to the left 1 cell).                |
+|   `+`   | Increment the value stored at the current cell.                             |
+|   `-`   | Decrement the value stored at the current cell.                             |
+|   `[`   | If the current cell value is zero, then jump forward to the matching `]`.   |
+|   `]`   | If the current cell value is nonzero, then jump back to the matching `[`.   |
+|   `,`   | Accept one character of input, storing its ASCII value in the current cell. |
+|   `.`   | Output the character corresponding to the value at the current cell.        |
+|  `+-`   | Flip up! Calls an `rcore` function.                                         |
+|  `-+`   | Flip down! Calls `rshapes` & `rmodels` functions.                           |
+|  `<>`   | Flip left! Calls `rtextures` & `rtext` functions.                           |
+|  `><`   | Flip right! Calls an `raudio` function.                                     |
+|   `?`   | Prints the pointer and value at current cell to the console.                |
+|   `#`   | Prints the entire current memory layout horizontally.                       |
+|   `$`   | Prints the entire current memory layout vertically.                         |
+|   `!`   | Stops the program.                                                          |
+|  `//`   | Single-line comment.                                                        |
+|   `{`   | Begin multi-line comment.                                                   |
+|   `}`   | End multi-line comment.                                                     |
+|  `\|`   | Spacer. Used to space commands for parser                                   |
 
 ## BitBit Data Types
 In strip memory, all data types must somehow be represented using only an array of unsigned 8-bit integers. So to fix this, **BitBit** uses separate models for different types of data.
@@ -283,12 +283,6 @@ We will first keep cell `0` at value `0`, since that value corresponds to `InitW
 
 `InitWindow(width: Uint8, height: Uint8, title: &String)`
 
-*In this example, I have used shorthand for brevity*:
-```brainfuck
-> +32 > +3 > +144 > +1 > +7 >> +65
-<<<<<<< +-
-```
-*Real code*:
 ```brainfuck
 >>++++[<++++++++>-]+++>>++++++
 ++++++[<++++++++++++>-]+>+++++
@@ -303,7 +297,7 @@ Memory Cells
  ^
 Memory Pointer
 ```
-Once `+-` is called, it will initialize a `800x400` window with the title `A`. 
+Once `+-` is called, it will initialize an `800x400` window with the title `A`. 
 
 
 ## Example
@@ -550,7 +544,5 @@ I'll warn you though, it's quite *vertical*!
 ```
 
 #### Why the fuck is your README so long?
-
->If only github provided a place in the repository to lay out the roadmap of my project, show the current status, and document the software better... oh well!
 
 ¯\\_\_(ツ)__/¯

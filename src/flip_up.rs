@@ -1,207 +1,213 @@
 use crate::BaseType;
 
+const FN_COUNT: usize = 200;
+const FN_MAP: [unsafe fn(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>>;
+    FN_COUNT] = [
+    init_window,
+    close_window,
+    window_should_close,
+    is_window_ready,
+    is_window_fullscreen,
+    is_window_hidden,
+    is_window_minimized,
+    is_window_maximized,
+    is_window_focused,
+    is_window_resized,
+    is_window_state,
+    set_window_state,
+    clear_window_state,
+    toggle_fullscreen,
+    toggle_borderless_windowed,
+    maximize_window,
+    minimize_window,
+    restore_window,
+    set_window_icon,
+    set_window_icons,
+    set_window_title,
+    set_window_position,
+    set_window_monitor,
+    set_window_min_size,
+    set_window_max_size,
+    set_window_size,
+    set_window_opacity,
+    set_window_focused,
+    get_window_handle,
+    get_screen_width,
+    get_screen_height,
+    get_render_width,
+    get_render_height,
+    get_monitor_count,
+    get_current_monitor,
+    get_monitor_position,
+    get_monitor_width,
+    get_monitor_height,
+    get_monitor_physical_width,
+    get_monitor_physical_height,
+    get_monitor_refresh_rate,
+    get_window_position,
+    get_window_scale_d_p_i,
+    get_monitor_name,
+    set_clipboard_text,
+    get_clipboard_text,
+    enable_event_waiting,
+    disable_event_waiting,
+    show_cursor,
+    hide_cursor,
+    is_cursor_hidden,
+    enable_cursor,
+    disable_cursor,
+    is_cursor_on_screen,
+    clear_background,
+    begin_drawing,
+    end_drawing,
+    begin_mode2_d,
+    end_mode2_d,
+    begin_mode3_d,
+    end_mode3_d,
+    begin_texture_mode,
+    end_texture_mode,
+    begin_shader_mode,
+    end_shader_mode,
+    begin_blend_mode,
+    end_blend_mode,
+    begin_scissor_mode,
+    end_scissor_mode,
+    begin_vr_stereo_mode,
+    end_vr_stereo_mode,
+    load_vr_stereo_config,
+    unload_vr_stereo_config,
+    load_shader,
+    load_shader_from_memory,
+    is_shader_ready,
+    get_shader_location,
+    get_shader_location_attrib,
+    set_shader_value,
+    set_shader_value_v,
+    set_shader_value_matrix,
+    set_shader_value_texture,
+    unload_shader,
+    get_mouse_ray,
+    get_camera_matrix,
+    get_camera_matrix2_d,
+    get_world_to_screen,
+    get_screen_to_world2_d,
+    get_world_to_screen_ex,
+    get_world_to_screen2_d,
+    set_target_f_p_s,
+    get_frame_time,
+    get_time,
+    get_f_p_s,
+    swap_screen_buffer,
+    poll_input_events,
+    wait_time,
+    set_random_seed,
+    get_random_value,
+    load_random_sequence,
+    unload_random_sequence,
+    take_screenshot,
+    set_config_flags,
+    open_u_r_l,
+    trace_log,
+    set_trace_log_level,
+    mem_alloc,
+    mem_realloc,
+    mem_free,
+    set_trace_log_callback,
+    set_load_file_data_callback,
+    set_save_file_data_callback,
+    set_load_file_text_callback,
+    set_save_file_text_callback,
+    load_file_data,
+    unload_file_data,
+    save_file_data,
+    export_data_as_code,
+    load_file_text,
+    unload_file_text,
+    save_file_text,
+    file_exists,
+    directory_exists,
+    is_file_extension,
+    get_file_length,
+    get_file_extension,
+    get_file_name,
+    get_file_name_without_ext,
+    get_directory_path,
+    get_prev_directory_path,
+    get_working_directory,
+    get_application_directory,
+    change_directory,
+    is_path_file,
+    load_directory_files,
+    load_directory_files_ex,
+    unload_directory_files,
+    is_file_dropped,
+    load_dropped_files,
+    unload_dropped_files,
+    get_file_mod_time,
+    compress_data,
+    decompress_data,
+    encode_data_base64,
+    decode_data_base64,
+    load_automation_event_list,
+    unload_automation_event_list,
+    export_automation_event_list,
+    set_automation_event_list,
+    set_automation_event_base_frame,
+    start_automation_event_recording,
+    stop_automation_event_recording,
+    play_automation_event,
+    is_key_pressed,
+    is_key_pressed_repeat,
+    is_key_down,
+    is_key_released,
+    is_key_up,
+    get_key_pressed,
+    get_char_pressed,
+    set_exit_key,
+    is_gamepad_available,
+    get_gamepad_name,
+    is_gamepad_button_pressed,
+    is_gamepad_button_down,
+    is_gamepad_button_released,
+    is_gamepad_button_up,
+    get_gamepad_button_pressed,
+    get_gamepad_axis_count,
+    get_gamepad_axis_movement,
+    set_gamepad_mappings,
+    is_mouse_button_pressed,
+    is_mouse_button_down,
+    is_mouse_button_released,
+    is_mouse_button_up,
+    get_mouse_x,
+    get_mouse_y,
+    get_mouse_position,
+    get_mouse_delta,
+    set_mouse_position,
+    set_mouse_offset,
+    set_mouse_scale,
+    get_mouse_wheel_move,
+    get_mouse_wheel_move_v,
+    set_mouse_cursor,
+    get_touch_x,
+    get_touch_y,
+    get_touch_position,
+    get_touch_point_id,
+    get_touch_point_count,
+    set_gestures_enabled,
+    is_gesture_detected,
+    get_gesture_detected,
+    get_gesture_hold_duration,
+    get_gesture_drag_vector,
+    get_gesture_drag_angle,
+    get_gesture_pinch_vector,
+    get_gesture_pinch_angle,
+    update_camera,
+    update_camera_pro,
+];
+
 pub unsafe fn call(memory: &mut Vec<BaseType>, pointer: usize) {
-    if let Some(result_cells) = match memory[pointer] {
-        0 => init_window(memory, pointer),
-        1 => close_window(),
-        2 => window_should_close(),
-        3 => is_window_ready(),
-        4 => is_window_fullscreen(),
-        5 => is_window_hidden(),
-        6 => is_window_minimized(),
-        7 => is_window_maximized(),
-        8 => is_window_focused(),
-        9 => is_window_resized(),
-        10 => is_window_state(memory, pointer),
-        11 => set_window_state(memory, pointer),
-        12 => clear_window_state(memory, pointer),
-        13 => toggle_fullscreen(),
-        14 => toggle_borderless_windowed(),
-        15 => maximize_window(),
-        16 => minimize_window(),
-        17 => restore_window(),
-        18 => set_window_icon(memory, pointer),
-        19 => set_window_icons(memory, pointer),
-        20 => set_window_title(memory, pointer),
-        21 => set_window_position(memory, pointer),
-        22 => set_window_monitor(memory, pointer),
-        23 => set_window_min_size(memory, pointer),
-        24 => set_window_max_size(memory, pointer),
-        25 => set_window_size(memory, pointer),
-        26 => set_window_opacity(memory, pointer),
-        27 => set_window_focused(),
-        28 => get_window_handle(),
-        29 => get_screen_width(),
-        30 => get_screen_height(),
-        31 => get_render_width(),
-        32 => get_render_height(),
-        33 => get_monitor_count(),
-        34 => get_current_monitor(),
-        35 => get_monitor_position(memory, pointer),
-        36 => get_monitor_width(memory, pointer),
-        37 => get_monitor_height(memory, pointer),
-        38 => get_monitor_physical_width(memory, pointer),
-        39 => get_monitor_physical_height(memory, pointer),
-        40 => get_monitor_refresh_rate(memory, pointer),
-        41 => get_window_position(),
-        42 => get_window_scale_d_p_i(),
-        43 => get_monitor_name(memory, pointer),
-        44 => set_clipboard_text(memory, pointer),
-        45 => get_clipboard_text(),
-        46 => enable_event_waiting(),
-        47 => disable_event_waiting(),
-        48 => show_cursor(),
-        49 => hide_cursor(),
-        50 => is_cursor_hidden(),
-        51 => enable_cursor(),
-        52 => disable_cursor(),
-        53 => is_cursor_on_screen(),
-        54 => clear_background(memory, pointer),
-        55 => begin_drawing(),
-        56 => end_drawing(),
-        57 => begin_mode2_d(memory, pointer),
-        58 => end_mode2_d(),
-        59 => begin_mode3_d(memory, pointer),
-        60 => end_mode3_d(),
-        61 => begin_texture_mode(memory, pointer),
-        62 => end_texture_mode(),
-        63 => begin_shader_mode(memory, pointer),
-        64 => end_shader_mode(),
-        65 => begin_blend_mode(memory, pointer),
-        66 => end_blend_mode(),
-        67 => begin_scissor_mode(memory, pointer),
-        68 => end_scissor_mode(),
-        69 => begin_vr_stereo_mode(memory, pointer),
-        70 => end_vr_stereo_mode(),
-        71 => load_vr_stereo_config(memory, pointer),
-        72 => unload_vr_stereo_config(memory, pointer),
-        73 => load_shader(memory, pointer),
-        74 => load_shader_from_memory(memory, pointer),
-        75 => is_shader_ready(memory, pointer),
-        76 => get_shader_location(memory, pointer),
-        77 => get_shader_location_attrib(memory, pointer),
-        78 => set_shader_value(memory, pointer),
-        79 => set_shader_value_v(memory, pointer),
-        80 => set_shader_value_matrix(memory, pointer),
-        81 => set_shader_value_texture(memory, pointer),
-        82 => unload_shader(memory, pointer),
-        83 => get_mouse_ray(memory, pointer),
-        84 => get_camera_matrix(memory, pointer),
-        85 => get_camera_matrix2_d(memory, pointer),
-        86 => get_world_to_screen(memory, pointer),
-        87 => get_screen_to_world2_d(memory, pointer),
-        88 => get_world_to_screen_ex(memory, pointer),
-        89 => get_world_to_screen2_d(memory, pointer),
-        90 => set_target_f_p_s(memory, pointer),
-        91 => get_frame_time(),
-        92 => get_time(),
-        93 => get_f_p_s(),
-        94 => swap_screen_buffer(),
-        95 => poll_input_events(),
-        96 => wait_time(memory, pointer),
-        97 => set_random_seed(memory, pointer),
-        98 => get_random_value(memory, pointer),
-        99 => load_random_sequence(memory, pointer),
-        100 => unload_random_sequence(memory, pointer),
-        101 => take_screenshot(memory, pointer),
-        102 => set_config_flags(memory, pointer),
-        103 => open_u_r_l(memory, pointer),
-        104 => trace_log(memory, pointer),
-        105 => set_trace_log_level(memory, pointer),
-        106 => mem_alloc(memory, pointer),
-        107 => mem_realloc(memory, pointer),
-        108 => mem_free(memory, pointer),
-        109 => set_trace_log_callback(memory, pointer),
-        110 => set_load_file_data_callback(memory, pointer),
-        111 => set_save_file_data_callback(memory, pointer),
-        112 => set_load_file_text_callback(memory, pointer),
-        113 => set_save_file_text_callback(memory, pointer),
-        114 => load_file_data(memory, pointer),
-        115 => unload_file_data(memory, pointer),
-        116 => save_file_data(memory, pointer),
-        117 => export_data_as_code(memory, pointer),
-        118 => load_file_text(memory, pointer),
-        119 => unload_file_text(memory, pointer),
-        120 => save_file_text(memory, pointer),
-        121 => file_exists(memory, pointer),
-        122 => directory_exists(memory, pointer),
-        123 => is_file_extension(memory, pointer),
-        124 => get_file_length(memory, pointer),
-        125 => get_file_extension(memory, pointer),
-        126 => get_file_name(memory, pointer),
-        127 => get_file_name_without_ext(memory, pointer),
-        128 => get_directory_path(memory, pointer),
-        129 => get_prev_directory_path(memory, pointer),
-        130 => get_working_directory(),
-        131 => get_application_directory(),
-        132 => change_directory(memory, pointer),
-        133 => is_path_file(memory, pointer),
-        134 => load_directory_files(memory, pointer),
-        135 => load_directory_files_ex(memory, pointer),
-        136 => unload_directory_files(memory, pointer),
-        137 => is_file_dropped(),
-        138 => load_dropped_files(),
-        139 => unload_dropped_files(memory, pointer),
-        140 => get_file_mod_time(memory, pointer),
-        141 => compress_data(memory, pointer),
-        142 => decompress_data(memory, pointer),
-        143 => encode_data_base64(memory, pointer),
-        144 => decode_data_base64(memory, pointer),
-        145 => load_automation_event_list(memory, pointer),
-        146 => unload_automation_event_list(memory, pointer),
-        147 => export_automation_event_list(memory, pointer),
-        148 => set_automation_event_list(memory, pointer),
-        149 => set_automation_event_base_frame(memory, pointer),
-        150 => start_automation_event_recording(),
-        151 => stop_automation_event_recording(),
-        152 => play_automation_event(memory, pointer),
-        153 => is_key_pressed(memory, pointer),
-        154 => is_key_pressed_repeat(memory, pointer),
-        155 => is_key_down(memory, pointer),
-        156 => is_key_released(memory, pointer),
-        157 => is_key_up(memory, pointer),
-        158 => get_key_pressed(),
-        159 => get_char_pressed(),
-        160 => set_exit_key(memory, pointer),
-        161 => is_gamepad_available(memory, pointer),
-        162 => get_gamepad_name(memory, pointer),
-        163 => is_gamepad_button_pressed(memory, pointer),
-        164 => is_gamepad_button_down(memory, pointer),
-        165 => is_gamepad_button_released(memory, pointer),
-        166 => is_gamepad_button_up(memory, pointer),
-        167 => get_gamepad_button_pressed(),
-        168 => get_gamepad_axis_count(memory, pointer),
-        169 => get_gamepad_axis_movement(memory, pointer),
-        170 => set_gamepad_mappings(memory, pointer),
-        171 => is_mouse_button_pressed(memory, pointer),
-        172 => is_mouse_button_down(memory, pointer),
-        173 => is_mouse_button_released(memory, pointer),
-        174 => is_mouse_button_up(memory, pointer),
-        175 => get_mouse_x(),
-        176 => get_mouse_y(),
-        177 => get_mouse_position(),
-        178 => get_mouse_delta(),
-        179 => set_mouse_position(memory, pointer),
-        180 => set_mouse_offset(memory, pointer),
-        181 => set_mouse_scale(memory, pointer),
-        182 => get_mouse_wheel_move(),
-        183 => get_mouse_wheel_move_v(),
-        184 => set_mouse_cursor(memory, pointer),
-        185 => get_touch_x(),
-        186 => get_touch_y(),
-        187 => get_touch_position(memory, pointer),
-        188 => get_touch_point_id(memory, pointer),
-        189 => get_touch_point_count(),
-        190 => set_gestures_enabled(memory, pointer),
-        191 => is_gesture_detected(memory, pointer),
-        192 => get_gesture_detected(),
-        193 => get_gesture_hold_duration(),
-        194 => get_gesture_drag_vector(),
-        195 => get_gesture_drag_angle(),
-        196 => get_gesture_pinch_vector(),
-        197 => get_gesture_pinch_angle(),
-        198 => update_camera(memory, pointer),
-        199 => update_camera_pro(memory, pointer),
+    if let Some(result_cells) = match memory[pointer] as usize {
+        id if id <= FN_COUNT => FN_MAP[id](memory, pointer),
         _ => None,
     } {
         for x in 1..=result_cells.len() {
@@ -210,9 +216,9 @@ pub unsafe fn call(memory: &mut Vec<BaseType>, pointer: usize) {
     }
 }
 
-/// Initialize window and OpenGL context
+// Initialize window and OpenGL context
 unsafe fn init_window(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    // [@][w][w][h][h][sptr][sptr]
+    // [@][width][width][height][height][str:ptr][str:ptr]
     let input_cells = crate::get_input_cells(memory, pointer, 6);
     let width = crate::cells_to_unsigned(&input_cells[0..2]);
     let height = crate::cells_to_unsigned(&input_cells[2..4]);
@@ -222,141 +228,211 @@ unsafe fn init_window(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<
     None
 }
 
-/// Close window and unload OpenGL context
-unsafe fn close_window() -> Option<Vec<BaseType>> {
+// Close window and unload OpenGL context
+unsafe fn close_window(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::CloseWindow();
     None
 }
 
-/// Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
-unsafe fn window_should_close() -> Option<Vec<BaseType>> {
+// Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
+unsafe fn window_should_close(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
     Some(vec![raylib::ffi::WindowShouldClose() as BaseType])
 }
 
-/// Check if window has been initialized successfully
-unsafe fn is_window_ready() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowReady();
-    None
+// Check if window has been initialized successfully
+unsafe fn is_window_ready(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowReady() as BaseType])
 }
 
-/// Check if window is currently fullscreen
-unsafe fn is_window_fullscreen() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowFullscreen();
-    None
+// Check if window is currently fullscreen
+unsafe fn is_window_fullscreen(
+    memory: &mut Vec<BaseType>,
+    pointer: usize,
+) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowFullscreen() as BaseType])
 }
 
-/// Check if window is currently hidden (only PLATFORM_DESKTOP)
-unsafe fn is_window_hidden() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowHidden();
-    None
+// Check if window is currently hidden (only PLATFORM_DESKTOP)
+unsafe fn is_window_hidden(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowHidden() as BaseType])
 }
 
-/// Check if window is currently minimized (only PLATFORM_DESKTOP)
-unsafe fn is_window_minimized() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowMinimized();
-    None
+// Check if window is currently minimized (only PLATFORM_DESKTOP)
+unsafe fn is_window_minimized(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowMinimized() as BaseType])
 }
 
-/// Check if window is currently maximized (only PLATFORM_DESKTOP)
-unsafe fn is_window_maximized() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowMaximized();
-    None
+// Check if window is currently maximized (only PLATFORM_DESKTOP)
+unsafe fn is_window_maximized(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowMaximized() as BaseType])
 }
 
-/// Check if window is currently focused (only PLATFORM_DESKTOP)
-unsafe fn is_window_focused() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowFocused();
-    None
+// Check if window is currently focused (only PLATFORM_DESKTOP)
+unsafe fn is_window_focused(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowFocused() as BaseType])
 }
 
-/// Check if window has been resized last frame
-unsafe fn is_window_resized() -> Option<Vec<BaseType>> {
-    raylib::ffi::IsWindowResized();
-    None
+// Check if window has been resized last frame
+unsafe fn is_window_resized(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [0/1][@]
+    Some(vec![raylib::ffi::IsWindowResized() as BaseType])
 }
 
 /// Check if one specific window flag is enabled
 unsafe fn is_window_state(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [0/1][@][flag][flag][flag][flag]
+    let input_cells = crate::get_input_cells(memory, pointer, 4);
+    let flag = crate::cells_to_unsigned(&input_cells) as u32;
+    Some(vec![raylib::ffi::IsWindowState(flag) as BaseType])
 }
 
 /// Set window configuration state using flags (only PLATFORM_DESKTOP)
 unsafe fn set_window_state(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][fc][flag_1][][][]...[flag_fc][][][]
+    let flag_count = memory[pointer + 1] as usize;
+    let input_cells = crate::get_input_cells(memory, pointer, flag_count * 4);
+    let mut flags = 0x0;
+    for fcells in input_cells.chunks(4) {
+        let flag = crate::cells_to_unsigned(&fcells) as u32;
+        flags |= flag;
+    }
+    raylib::ffi::SetWindowState(flags);
+    None
 }
 
 /// Clear window configuration state flags
 unsafe fn clear_window_state(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][flag_count][flag_1][][][]...[flag_x][][][]
+    let flag_count = memory[pointer + 1] as usize;
+    let input_cells = crate::get_input_cells(memory, pointer, flag_count * 4);
+    let mut flags = 0x0;
+    for fcells in input_cells.chunks(4) {
+        let flag = crate::cells_to_unsigned(&fcells) as u32;
+        flags |= flag;
+    }
+    raylib::ffi::ClearWindowState(flags);
+    None
 }
 
 /// Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
-unsafe fn toggle_fullscreen() -> Option<Vec<BaseType>> {
+unsafe fn toggle_fullscreen(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::ToggleFullscreen();
     None
 }
 
 /// Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
-unsafe fn toggle_borderless_windowed() -> Option<Vec<BaseType>> {
+unsafe fn toggle_borderless_windowed(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::ToggleBorderlessWindowed()");
 }
 
 /// Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
-unsafe fn maximize_window() -> Option<Vec<BaseType>> {
+unsafe fn maximize_window(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::MaximizeWindow();
     None
 }
 
 /// Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
-unsafe fn minimize_window() -> Option<Vec<BaseType>> {
+unsafe fn minimize_window(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::MinimizeWindow();
     None
 }
 
 /// Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
-unsafe fn restore_window() -> Option<Vec<BaseType>> {
+unsafe fn restore_window(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::RestoreWindow();
     None
 }
 
 /// Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
 unsafe fn set_window_icon(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][image:ptr][image:ptr]
+    let input_cells = crate::get_input_cells(memory, pointer, 2);
+    let image_ptr = crate::cells_to_unsigned(&input_cells);
+    let image = crate::get_image(memory, image_ptr);
+    raylib::ffi::SetWindowIcon(image);
+    None
 }
 
 /// Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
 unsafe fn set_window_icons(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][image_count][image_1:ptr][image_1:ptr]...[image_X:ptr][image_X:ptr]
+    let image_count = memory[pointer + 1] as usize;
+    let input_cells = crate::get_input_cells(memory, pointer + 1, image_count * 2);
+    for ptr_cells in input_cells.chunks(2) {
+        let image_ptr = crate::cells_to_unsigned(ptr_cells);
+        let image = crate::get_image(memory, image_ptr);
+        raylib::ffi::SetWindowIcon(image);
+    }
+    None
 }
 
 /// Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
 unsafe fn set_window_title(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][str:ptr][str:ptr]
+    let input_cells = crate::get_input_cells(memory, pointer, 2);
+    let title_ptr = crate::cells_to_unsigned_u16(&input_cells);
+    let title = crate::get_string(memory, title_ptr as usize);
+    raylib::ffi::SetWindowTitle(title.as_ptr() as *const i8);
+    None
 }
 
 /// Set window position on screen (only PLATFORM_DESKTOP)
 unsafe fn set_window_position(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][x][x][y][y]
+    let input_cells = crate::get_input_cells(memory, pointer, 4);
+    let x = crate::cells_to_unsigned_u16(&input_cells[0..2]);
+    let y = crate::cells_to_unsigned_u16(&input_cells[2..4]);
+    raylib::ffi::SetWindowPosition(x as i32, y as i32);
+    None
 }
 
 /// Set monitor for the current window
 unsafe fn set_window_monitor(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][monitor]
+    let input_cells = crate::get_input_cells(memory, pointer, 1);
+    let monitor = input_cells[0];
+    raylib::ffi::SetWindowMonitor(monitor as i32);
+    None
 }
 
 /// Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
 unsafe fn set_window_min_size(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][width][width][height][height]
+    let input_cells = crate::get_input_cells(memory, pointer, 4);
+    let width = crate::cells_to_unsigned(&input_cells[0..2]);
+    let height = crate::cells_to_unsigned(&input_cells[2..4]);
+    raylib::ffi::SetWindowMinSize(width as i32, height as i32);
+    None
 }
 
 /// Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)
 unsafe fn set_window_max_size(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
+    // [@][width][width][height][height]
+    let input_cells = crate::get_input_cells(memory, pointer, 4);
+    let width = crate::cells_to_unsigned(&input_cells[0..2]);
+    let height = crate::cells_to_unsigned(&input_cells[2..4]);
+    // raylib::ffi::SetWindowMinSize(width as i32, height as i32);
     unimplemented!()
 }
 
 /// Set window dimensions
 unsafe fn set_window_size(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<BaseType>> {
-    unimplemented!()
+    // [@][width][width][height][height]
+    let input_cells = crate::get_input_cells(memory, pointer, 4);
+    let width = crate::cells_to_unsigned(&input_cells[0..2]);
+    let height = crate::cells_to_unsigned(&input_cells[2..4]);
+    raylib::ffi::SetWindowSize(width as i32, height as i32);
+    None
 }
 
 /// Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
@@ -365,46 +441,52 @@ unsafe fn set_window_opacity(memory: &mut Vec<BaseType>, pointer: usize) -> Opti
 }
 
 /// Set window focused (only PLATFORM_DESKTOP)
-unsafe fn set_window_focused() -> Option<Vec<BaseType>> {
+unsafe fn set_window_focused(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::SetWindowFocused()")
 }
 
 /// Get native window handle
-unsafe fn get_window_handle() -> Option<Vec<BaseType>> {
+unsafe fn get_window_handle(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetWindowHandle();
     None
 }
 
 /// Get current screen width
-unsafe fn get_screen_width() -> Option<Vec<BaseType>> {
+unsafe fn get_screen_width(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetScreenWidth();
     None
 }
 
 /// Get current screen height
-unsafe fn get_screen_height() -> Option<Vec<BaseType>> {
+unsafe fn get_screen_height(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetScreenHeight();
     None
 }
 
 /// Get current render width (it considers HiDPI)
-unsafe fn get_render_width() -> Option<Vec<BaseType>> {
+unsafe fn get_render_width(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::GetRenderWidth()")
 }
 
 /// Get current render height (it considers HiDPI)
-unsafe fn get_render_height() -> Option<Vec<BaseType>> {
+unsafe fn get_render_height(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::GetRenderHeight()");
 }
 
 /// Get number of connected monitors
-unsafe fn get_monitor_count() -> Option<Vec<BaseType>> {
+unsafe fn get_monitor_count(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetMonitorCount();
     None
 }
 
 /// Get current connected monitor
-unsafe fn get_current_monitor() -> Option<Vec<BaseType>> {
+unsafe fn get_current_monitor(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetCurrentMonitor();
     None
 }
@@ -452,13 +534,19 @@ unsafe fn get_monitor_refresh_rate(
 }
 
 /// Get window position XY on monitor
-unsafe fn get_window_position() -> Option<Vec<BaseType>> {
+unsafe fn get_window_position(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetWindowPosition();
     None
 }
 
 /// Get window scale DPI factor
-unsafe fn get_window_scale_d_p_i() -> Option<Vec<BaseType>> {
+unsafe fn get_window_scale_d_p_i(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetWindowScaleDPI();
     None
 }
@@ -474,53 +562,65 @@ unsafe fn set_clipboard_text(memory: &mut Vec<BaseType>, pointer: usize) -> Opti
 }
 
 /// Get clipboard text content
-unsafe fn get_clipboard_text() -> Option<Vec<BaseType>> {
+unsafe fn get_clipboard_text(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetClipboardText();
     None
 }
 
 /// Enable waiting for events on EndDrawing(), no automatic event polling
-unsafe fn enable_event_waiting() -> Option<Vec<BaseType>> {
+unsafe fn enable_event_waiting(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::EnableEventWaiting()")
 }
 
 /// Disable waiting for events on EndDrawing(), automatic events polling
-unsafe fn disable_event_waiting() -> Option<Vec<BaseType>> {
+unsafe fn disable_event_waiting(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::DisableEventWaiting()")
 }
 
 /// Shows cursor
-unsafe fn show_cursor() -> Option<Vec<BaseType>> {
+unsafe fn show_cursor(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::ShowCursor();
     None
 }
 
 /// Hides cursor
-unsafe fn hide_cursor() -> Option<Vec<BaseType>> {
+unsafe fn hide_cursor(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::HideCursor();
     None
 }
 
 /// Check if cursor is not visible
-unsafe fn is_cursor_hidden() -> Option<Vec<BaseType>> {
+unsafe fn is_cursor_hidden(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::IsCursorHidden();
     None
 }
 
 /// Enables cursor (unlock cursor)
-unsafe fn enable_cursor() -> Option<Vec<BaseType>> {
+unsafe fn enable_cursor(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EnableCursor();
     None
 }
 
 /// Disables cursor (lock cursor)
-unsafe fn disable_cursor() -> Option<Vec<BaseType>> {
+unsafe fn disable_cursor(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::DisableCursor();
     None
 }
 
 /// Check if cursor is on the screen
-unsafe fn is_cursor_on_screen() -> Option<Vec<BaseType>> {
+unsafe fn is_cursor_on_screen(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::IsCursorOnScreen();
     None
 }
@@ -536,13 +636,13 @@ unsafe fn clear_background(memory: &mut Vec<BaseType>, pointer: usize) -> Option
 }
 
 /// Setup canvas (framebuffer) to start drawing
-unsafe fn begin_drawing() -> Option<Vec<BaseType>> {
+unsafe fn begin_drawing(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::BeginDrawing();
     None
 }
 
 /// End canvas drawing and swap buffers (double buffering)
-unsafe fn end_drawing() -> Option<Vec<BaseType>> {
+unsafe fn end_drawing(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndDrawing();
     None
 }
@@ -553,7 +653,7 @@ unsafe fn begin_mode2_d(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Ve
 }
 
 /// Ends 2D mode with custom camera
-unsafe fn end_mode2_d() -> Option<Vec<BaseType>> {
+unsafe fn end_mode2_d(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndMode2D();
     None
 }
@@ -564,7 +664,7 @@ unsafe fn begin_mode3_d(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Ve
 }
 
 /// Ends 3D mode and returns to default 2D orthographic mode
-unsafe fn end_mode3_d() -> Option<Vec<BaseType>> {
+unsafe fn end_mode3_d(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndMode3D();
     None
 }
@@ -575,7 +675,7 @@ unsafe fn begin_texture_mode(memory: &mut Vec<BaseType>, pointer: usize) -> Opti
 }
 
 /// Ends drawing to render texture
-unsafe fn end_texture_mode() -> Option<Vec<BaseType>> {
+unsafe fn end_texture_mode(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndTextureMode();
     None
 }
@@ -586,7 +686,7 @@ unsafe fn begin_shader_mode(memory: &mut Vec<BaseType>, pointer: usize) -> Optio
 }
 
 /// End custom shader drawing (use default shader)
-unsafe fn end_shader_mode() -> Option<Vec<BaseType>> {
+unsafe fn end_shader_mode(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndShaderMode();
     None
 }
@@ -597,7 +697,7 @@ unsafe fn begin_blend_mode(memory: &mut Vec<BaseType>, pointer: usize) -> Option
 }
 
 /// End blending mode (reset to default: alpha blending)
-unsafe fn end_blend_mode() -> Option<Vec<BaseType>> {
+unsafe fn end_blend_mode(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndBlendMode();
     None
 }
@@ -608,7 +708,7 @@ unsafe fn begin_scissor_mode(memory: &mut Vec<BaseType>, pointer: usize) -> Opti
 }
 
 /// End scissor mode
-unsafe fn end_scissor_mode() -> Option<Vec<BaseType>> {
+unsafe fn end_scissor_mode(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::EndScissorMode();
     None
 }
@@ -622,7 +722,10 @@ unsafe fn begin_vr_stereo_mode(
 }
 
 /// End stereo rendering (requires VR simulator)
-unsafe fn end_vr_stereo_mode() -> Option<Vec<BaseType>> {
+unsafe fn end_vr_stereo_mode(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::EndVrStereoMode();
     None
 }
@@ -758,30 +861,33 @@ unsafe fn set_target_f_p_s(memory: &mut Vec<BaseType>, pointer: usize) -> Option
 }
 
 /// Get time in seconds for last frame drawn (delta time)
-unsafe fn get_frame_time() -> Option<Vec<BaseType>> {
+unsafe fn get_frame_time(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetFrameTime();
     None
 }
 
 /// Get elapsed time in seconds since InitWindow()
-unsafe fn get_time() -> Option<Vec<BaseType>> {
+unsafe fn get_time(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetTime();
     None
 }
 
 /// Get current FPS
-unsafe fn get_f_p_s() -> Option<Vec<BaseType>> {
+unsafe fn get_f_p_s(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetFPS();
     None
 }
 
 /// Swap back buffer with front buffer (screen drawing)
-unsafe fn swap_screen_buffer() -> Option<Vec<BaseType>> {
+unsafe fn swap_screen_buffer(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::SwapScreenBuffer()")
 }
 
 /// Register all input events
-unsafe fn poll_input_events() -> Option<Vec<BaseType>> {
+unsafe fn poll_input_events(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::PollInputEvents()")
 }
 
@@ -983,13 +1089,19 @@ unsafe fn get_prev_directory_path(
 }
 
 /// Get current working directory (uses static string)
-unsafe fn get_working_directory() -> Option<Vec<BaseType>> {
+unsafe fn get_working_directory(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetWorkingDirectory();
     None
 }
 
 /// Get the directory of the running application (uses static string)
-unsafe fn get_application_directory() -> Option<Vec<BaseType>> {
+unsafe fn get_application_directory(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::GetApplicationDirectory()")
 }
 
@@ -1028,13 +1140,16 @@ unsafe fn unload_directory_files(
 }
 
 /// Check if a file has been dropped into window
-unsafe fn is_file_dropped() -> Option<Vec<BaseType>> {
+unsafe fn is_file_dropped(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::IsFileDropped();
     None
 }
 
 /// Load dropped filepaths
-unsafe fn load_dropped_files() -> Option<Vec<BaseType>> {
+unsafe fn load_dropped_files(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::LoadDroppedFiles()")
 }
 
@@ -1112,12 +1227,18 @@ unsafe fn set_automation_event_base_frame(
 }
 
 /// Start recording automation events (AutomationEventList must be set)
-unsafe fn start_automation_event_recording() -> Option<Vec<BaseType>> {
+unsafe fn start_automation_event_recording(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::StartAutomationEventRecording()")
 }
 
 /// Stop recording automation events
-unsafe fn stop_automation_event_recording() -> Option<Vec<BaseType>> {
+unsafe fn stop_automation_event_recording(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::StopAutomationEventRecording()")
 }
 
@@ -1158,13 +1279,13 @@ unsafe fn is_key_up(memory: &mut Vec<BaseType>, pointer: usize) -> Option<Vec<Ba
 }
 
 /// Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
-unsafe fn get_key_pressed() -> Option<Vec<BaseType>> {
+unsafe fn get_key_pressed(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetKeyPressed();
     None
 }
 
 /// Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
-unsafe fn get_char_pressed() -> Option<Vec<BaseType>> {
+unsafe fn get_char_pressed(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetCharPressed();
     None
 }
@@ -1220,7 +1341,10 @@ unsafe fn is_gamepad_button_up(
 }
 
 /// Get the last gamepad button pressed
-unsafe fn get_gamepad_button_pressed() -> Option<Vec<BaseType>> {
+unsafe fn get_gamepad_button_pressed(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGamepadButtonPressed();
     None
 }
@@ -1279,25 +1403,28 @@ unsafe fn is_mouse_button_up(memory: &mut Vec<BaseType>, pointer: usize) -> Opti
 }
 
 /// Get mouse position X
-unsafe fn get_mouse_x() -> Option<Vec<BaseType>> {
+unsafe fn get_mouse_x(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetMouseX();
     None
 }
 
 /// Get mouse position Y
-unsafe fn get_mouse_y() -> Option<Vec<BaseType>> {
+unsafe fn get_mouse_y(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetMouseY();
     None
 }
 
 /// Get mouse position XY
-unsafe fn get_mouse_position() -> Option<Vec<BaseType>> {
+unsafe fn get_mouse_position(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetMousePosition();
     None
 }
 
 /// Get mouse delta between frames
-unsafe fn get_mouse_delta() -> Option<Vec<BaseType>> {
+unsafe fn get_mouse_delta(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::GetMouseDelta()")
 }
 
@@ -1317,13 +1444,19 @@ unsafe fn set_mouse_scale(memory: &mut Vec<BaseType>, pointer: usize) -> Option<
 }
 
 /// Get mouse wheel movement for X or Y, whichever is larger
-unsafe fn get_mouse_wheel_move() -> Option<Vec<BaseType>> {
+unsafe fn get_mouse_wheel_move(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetMouseWheelMove();
     None
 }
 
 /// Get mouse wheel movement for both X and Y
-unsafe fn get_mouse_wheel_move_v() -> Option<Vec<BaseType>> {
+unsafe fn get_mouse_wheel_move_v(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     unimplemented!("raylib::ffi::GetMouseWheelMoveV()")
 }
 
@@ -1333,13 +1466,13 @@ unsafe fn set_mouse_cursor(memory: &mut Vec<BaseType>, pointer: usize) -> Option
 }
 
 /// Get touch position X for touch point 0 (relative to screen size)
-unsafe fn get_touch_x() -> Option<Vec<BaseType>> {
+unsafe fn get_touch_x(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetTouchX();
     None
 }
 
 /// Get touch position Y for touch point 0 (relative to screen size)
-unsafe fn get_touch_y() -> Option<Vec<BaseType>> {
+unsafe fn get_touch_y(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
     raylib::ffi::GetTouchY();
     None
 }
@@ -1355,7 +1488,10 @@ unsafe fn get_touch_point_id(memory: &mut Vec<BaseType>, pointer: usize) -> Opti
 }
 
 /// Get number of touch points
-unsafe fn get_touch_point_count() -> Option<Vec<BaseType>> {
+unsafe fn get_touch_point_count(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     Some(vec![raylib::ffi::GetTouchPointsCount() as BaseType])
 }
 
@@ -1373,37 +1509,55 @@ unsafe fn is_gesture_detected(memory: &mut Vec<BaseType>, pointer: usize) -> Opt
 }
 
 /// Get latest detected gesture
-unsafe fn get_gesture_detected() -> Option<Vec<BaseType>> {
+unsafe fn get_gesture_detected(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGestureDetected();
     None
 }
 
 /// Get gesture hold time in milliseconds
-unsafe fn get_gesture_hold_duration() -> Option<Vec<BaseType>> {
+unsafe fn get_gesture_hold_duration(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGestureHoldDuration();
     None
 }
 
 /// Get gesture drag vector
-unsafe fn get_gesture_drag_vector() -> Option<Vec<BaseType>> {
+unsafe fn get_gesture_drag_vector(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGestureDragVector();
     None
 }
 
 /// Get gesture drag angle
-unsafe fn get_gesture_drag_angle() -> Option<Vec<BaseType>> {
+unsafe fn get_gesture_drag_angle(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGestureDragAngle();
     None
 }
 
 /// Get gesture pinch delta
-unsafe fn get_gesture_pinch_vector() -> Option<Vec<BaseType>> {
+unsafe fn get_gesture_pinch_vector(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGesturePinchVector();
     None
 }
 
 /// Get gesture pinch angle
-unsafe fn get_gesture_pinch_angle() -> Option<Vec<BaseType>> {
+unsafe fn get_gesture_pinch_angle(
+    _memory: &mut Vec<BaseType>,
+    _pointer: usize,
+) -> Option<Vec<BaseType>> {
     raylib::ffi::GetGesturePinchAngle();
     None
 }

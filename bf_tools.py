@@ -105,57 +105,58 @@ def text_to_bf(text):
         code = rbf_gen(x)
         print(code)
 
-args = sys.argv
-match len(args):
-    case 4:
-        val = args[1]
-        command = args[2]
-        val2 = args[3]
-        match command:
-            case "minify":
-                minify(val, val2)
-            case "base":
-                base(int(val), int(val2))
-            case "repeat":
-                print("char:", val)
-                print(val * int(val2))
-            case _:
-                print(args)
-                print("Command doesnt exist!")
-                print("try 'commands'.")
-    case 3:
-        command = args[1]
-        val = args[2]
-        match command:
-            case "bf":
-                if val.isnumeric():
-                    print(rbf_gen(int(val)))
-                elif type(val) == str:
-                    text_to_bf(val)
-                else:
-                    print("Wrong type for arg!")
-            case "count":
-                print("'"+val+"'")
-                print("characters:", len(val))
-            case _:
-                print(args)
-                print("Command doesnt exist!")
-                print("try 'commands'.")
-    case 2:
-        command = args[1]
-        match command:
-            case "commands":
-                print("commands: list commands")
-                print("minify [x, c, x]: shorten bf file to another file")
-                print("base [x, c, x]: convert num to base n")
-                print("bf [c, x]: generate bf code for num/string")
-                print("count [c, x]: count amount of chars in str")
-                print("repeat [x, c, x]: repeat char n amount")
-                print("x = value, c = command")
-            case _:
-                print(args)
-                print("Command doesnt exist!")
-                print("try 'commands'.")
-    case _:
-        print("Incorrect arg amount!")
-        exit()
+if __name__ == "__main__":
+    args = sys.argv
+    match len(args):
+        case 4:
+            val = args[1]
+            command = args[2]
+            val2 = args[3]
+            match command:
+                case "minify":
+                    minify(val, val2)
+                case "base":
+                    base(int(val), int(val2))
+                case "repeat":
+                    print("char:", val)
+                    print(val * int(val2))
+                case _:
+                    print(args)
+                    print("Command doesnt exist!")
+                    print("try 'commands'.")
+        case 3:
+            command = args[1]
+            val = args[2]
+            match command:
+                case "bf":
+                    if val.isnumeric():
+                        print(rbf_gen(int(val)))
+                    elif type(val) == str:
+                        text_to_bf(val)
+                    else:
+                        print("Wrong type for arg!")
+                case "count":
+                    print("'"+val+"'")
+                    print("characters:", len(val))
+                case _:
+                    print(args)
+                    print("Command doesnt exist!")
+                    print("try 'commands'.")
+        case 2:
+            command = args[1]
+            match command:
+                case "commands":
+                    print("commands: list commands")
+                    print("minify [x, c, x]: shorten bf file to another file")
+                    print("base [x, c, x]: convert num to base n")
+                    print("bf [c, x]: generate bf code for num/string")
+                    print("count [c, x]: count amount of chars in str")
+                    print("repeat [x, c, x]: repeat char n amount")
+                    print("x = value, c = command")
+                case _:
+                    print(args)
+                    print("Command doesnt exist!")
+                    print("try 'commands'.")
+        case _:
+            print("Incorrect arg amount!")
+            exit()
