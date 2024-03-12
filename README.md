@@ -264,7 +264,7 @@ $$
 \begin{aligned}
 &\bullet\space\text{Minimum: frac}=\vec{0}&\implies&M=1.0\\
 &\bullet\space\text{Maximum: frac}=\overrightarrow{255}&\implies&M=2.0-\epsilon
-\end{aligned} \\\space\\
+\end{aligned}
 $$
 
 $$
@@ -279,8 +279,13 @@ Therefore, the value of a normalized `Float` is calculated as $v$ where:
 
 $$
 \begin{aligned}
-v_{10} &= (–1)^s \cdot M \cdot 256^E \\\space\\
-v_{10} &= {(–1)^s} \cdot {(1+\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}})} \cdot {256^{(\sum_{i=0}^{|\vec{e}|-1}\vec{e}_i\cdot256^i)-(256^{|\vec{e}|-1}-1)}}
+v_{10} &= (–1)^s \cdot M \cdot 256^E
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+v_{10} &= {(–1)^s} \cdot (1+\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}}) \cdot 256^{(\sum_{i=0}^{|\vec{e}|-1}\vec{e}_i\cdot256^i)-(256^{|\vec{e}|-1}-1)}
 \end{aligned}
 $$
 
@@ -324,7 +329,12 @@ Therefore, the value of a denormalized `Float` is calculated as $v$ where:
 
 $$
 \begin{aligned}
-v_{10} &= (–1)^s \cdot M \cdot 256^E \\\space\\
+v_{10} &= (–1)^s \cdot M \cdot 256^E
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
 v_{10} &= {(–1)^s} \cdot {(\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}})} \cdot {256^{(1-(256^{|\vec{e}|-1}-1))}}
 \end{aligned}
 $$
