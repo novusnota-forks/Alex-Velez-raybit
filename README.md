@@ -99,11 +99,11 @@ $\text{Max Value} = {256^b} - 1$
 The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding $256^n$.
 
 $$
-\begin{aligned}
+\begin{flalign}
 w &= \text{width of unsigned integer} \\
 \vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\
 v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i \\
-\end{aligned}
+\end{flalign}
 $$
 
 
