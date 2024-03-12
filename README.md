@@ -255,15 +255,15 @@ $$
 
 $$
 \begin{aligned}
-M  &=  1 + 0.[x]...[x] \\    
+M  &=  1 + 0.[x]...[x] \\
 \overrightarrow{[x]} &= \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
-&\bullet\space\text{Minimum: frac} = \vec{0} &\implies\space &M = 1.0 \\
-&\bullet\space\text{Maximum: frac} = \overrightarrow{255} &\implies\space &M = 2.0 \space – \space \epsilon
+&\bullet\space\text{Minimum: frac}=\vec{0}&\implies&M=1.0\\
+&\bullet\space\text{Maximum: frac}=\overrightarrow{255}&\implies&M=2.0-\epsilon
 \end{aligned} \\\space\\
 $$
 
@@ -307,9 +307,9 @@ $$
 
 $$
 \begin{aligned}
-&\bullet\space\text{frac}=\vec{0} &\implies\space &v_{10} = 0 \\
-&\bullet\space\text{frac}\not=\vec{0} &\implies\space &|v_{10}| \in (0, 1) \space
-\end{aligned} \\\space\\
+&\bullet\space\text{frac}=\vec{0}&\implies&v_{10}=0\\
+&\bullet\space\text{frac}\not=\vec{0}&\implies&|v_{10}|\in(0,1)
+\end{aligned}
 $$
 
 $$
@@ -333,8 +333,8 @@ $$
 
 $$
 \begin{aligned}
-&\text{frac}=\vec{0} &\implies\space &v_{10} = \pm\infty \\
-&\text{frac}\not=\vec{0} &\implies\space &v_{10} = NaN \space
+&\text{frac}=\vec{0}&\implies\space &v_{10} = \pm\infty \\
+&\text{frac}\not=\vec{0}&\implies\space &v_{10} = NaN \space
 \end{aligned}
 $$
 
