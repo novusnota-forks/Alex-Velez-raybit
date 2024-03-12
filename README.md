@@ -85,10 +85,9 @@ Memory Pointer
 
 #### `Unsigned Integer`:
 
-$\begin{aligned}
-&b = \text{Byte Size} \\
-&\text{Max Value} = {256^b} - 1
-\end{aligned}$
+$b = \text{Byte Size}$
+
+$\text{Max Value} = {256^b} - 1$
 
 | $\text{Type}$ | $\text{Bit-size}$ | $\text{Byte-size}$ | $\text{Max Value}$ |
 | :------------ | :---------------- | :----------------- | :----------------- |
