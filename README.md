@@ -242,101 +242,101 @@ $\text{sign} = (-1)^s$
 
 * Exponent coded as a biased value, dependant on the number of exponent bytes:
 
-$
+$$
 \begin{aligned}
 \vec{e} &= \text{exp}\\
 k &= \text{width of } \vec{e} \\
 bias &= 256^{k - 1} - 1 \\
 E &= \text{uint(}\vec{e}\text{)} - bias
 \end{aligned}
-$
+$$
 
 * Mantissa $M$ coded with implied leading $1$:
 
-$
+$$
 \begin{aligned}
 M  &=  1 + 0.[x]...[x] \\    
 \overrightarrow{[x]} &= \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor
 \end{aligned}
-$
+$$
 
-$
+$$
 \begin{aligned}
 &\bullet\space\text{Minimum: frac} = \vec{0} &\rArr\space &M = 1.0 \\
 &\bullet\space\text{Maximum: frac} = \overrightarrow{255} &\rArr\space &M = 2.0 \space – \space \epsilon
 \end{aligned} \\\space\\
-$
+$$
 
-$
+$$
 \begin{aligned}
 \vec{F} &= \text{frac} \\
 w &= \text{width of }\vec{F} \\
 M &= 1 + \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
 \end{aligned}
-$
+$$
 
 Therefore, the value of a normalized `Float` is calculated as $v$ where:
 
-$
+$$
 \begin{aligned}
 v_{10} &= (–1)^s \cdot M \cdot 256^E \\\space\\
 v_{10} &= {(–1)^s} \cdot {(1+\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}})} \cdot {256^{(\sum_{i=0}^{|\vec{e}|-1}\vec{e}_i\cdot256^i)-(256^{|\vec{e}|-1}-1)}}
 \end{aligned}
-$
+$$
 
 #### Denormalized Values: $exp = \vec{0}$
 * Exponent is explicitly coded as:
 
-$
+$$
 \begin{aligned}
 \vec{e} &= \text{exp}\\
 k &= \text{width of } \vec{e} \\
 bias &= 256^{k - 1} - 1 \\
 E &= 1 - bias
 \end{aligned}
-$
+$$
 
 * Mantissa $M$ coded with implied leading $0$:
 
-$
+$$
 \begin{aligned}
 M &= 0.[x]...[x] \\
 \overrightarrow{[x]} &= \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor  
 \end{aligned}
-$
+$$
 
-$
+$$
 \begin{aligned}
 &\bullet\space\text{frac}=\vec{0} &\rArr\space &v_{10} = 0 \\
 &\bullet\space\text{frac}\not=\vec{0} &\rArr\space &|v_{10}| \in (0, 1) \space
 \end{aligned} \\\space\\
-$
+$$
 
-$
+$$
 \begin{aligned}
 \vec{F} &= \text{frac} \\
 w &= \text{width of }\vec{F} \\\space\\
 M &= \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
 \end{aligned}
-$
+$$
 
 Therefore, the value of a denormalized `Float` is calculated as $v$ where:
 
-$
+$$
 \begin{aligned}
 v_{10} &= (–1)^s \cdot M \cdot 256^E \\\space\\
 v_{10} &= {(–1)^s} \cdot {(\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}})} \cdot {256^{(1-(256^{|\vec{e}|-1}-1))}}
 \end{aligned}
-$
+$$
 
 #### Special Values: $\text{exp} = \overrightarrow{255}$
 
-$
+$$
 \begin{aligned}
 &\text{frac}=\vec{0} &\rArr\space &v_{10} = \pm\infty \\
 &\text{frac}\not=\vec{0} &\rArr\space &v_{10} = NaN \space
 \end{aligned}
-$
+$$
 
 ### `Structs`:
 A `Struct` is simply defined as a collection of fields. It consists of an array containing its fields in order. The fields are a `Pointer` to the data, except for `Boolean` and `Uint8` as those can be stored in the field cells directly. Therefore, with the default word size, `2` (16-bit), all fields require `2` cells to store each `Pointer` or value.
