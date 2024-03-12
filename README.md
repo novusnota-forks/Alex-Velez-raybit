@@ -230,15 +230,18 @@ Total Bit Size: 88
 
 ### Calculation of `Float`:
 
-$$v_{256} = \text{value of floating-point number in base-256}$$
-$$v_{10} = \text{value of floating-point number in base-10}$$
-$$\text{sign} = (-1)^s$$
+$v_{256} = \text{value of floating-point number in base-256}$
+
+$v_{10} = \text{value of floating-point number in base-10}$
+
+$\text{sign} = (-1)^s$
 
 > *Because the sign is determined by a whole cell, this also has the potential to represent several types of abstract numerical values in a single byte for values 2 to 255.*
 
-#### Normalized Values: $\text{exp}\not={\vec{0}}\And\text{exp}\not={\overrightharpoon{255}}$
+#### Normalized Values: $\text{exp}\not={\vec{0}}\space\And\space\text{exp}\not={\overrightarrow{255}}$
 
 * Exponent coded as a biased value, dependant on the number of exponent bytes:
+
 $$
 \begin{aligned}
 \vec{e} &= \text{exp}\\
@@ -251,19 +254,22 @@ $$
 * Mantissa $M$ coded with implied leading $1$:
 
 $$M  =  1 + 0.[x]...[x]$$
-$$\overrightharpoon{[x]} = \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor$$
+
+$$\overrightarrow{[x]} = \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor$$
 
 $$
 \begin{aligned}
 &\bullet\space\text{Minimum: frac} = \vec{0} &\rArr\space &M = 1.0 \\
-&\bullet\space\text{Maximum: frac} = \overrightharpoon{255} &\rArr\space &M = 2.0 \space – \space \epsilon
+&\bullet\space\text{Maximum: frac} = \overrightarrow{255} &\rArr\space &M = 2.0 \space – \space \epsilon
 \end{aligned} \\\space\\
-
-\vec{F} = \text{frac} \\
-w = \text{width of }\vec{F} \\\space\\
-
-M = 1 + \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
 $$
+
+
+$$\vec{F} = \text{frac}$$
+
+$$w = \text{width of }\vec{F}$$
+
+$$M = 1 + \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}$$
 
 Therefore, the value of a normalized `Float` is calculated as $v$ where:
 
@@ -289,7 +295,7 @@ $$
 * Mantissa $M$ coded with implied leading $0$:
 
 $$M = 0.[x]...[x]$$
-$$\overrightharpoon{[x]} = \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor$$
+$$\overrightarrow{[x]} = \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor$$
 
 $$
 \begin{aligned}
@@ -312,7 +318,7 @@ v_{10} &= {(–1)^s} \cdot {(\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i
 \end{aligned}
 $$
 
-#### Special Values: $\text{exp} = \overrightharpoon{255}$
+#### Special Values: $\text{exp} = \overrightarrow{255}$
 
 $$
 \begin{aligned}
