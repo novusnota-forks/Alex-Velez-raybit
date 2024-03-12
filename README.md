@@ -85,10 +85,12 @@ Memory Pointer
 
 #### `Unsigned Integer`:
 
-$$
-b = \text{Byte Size} \\
-\text{Max Value} = {256^b} - 1
-$$
+$
+\begin{aligned}
+&b = \text{Byte Size} \\
+&\text{Max Value} = {256^b} - 1
+\end{aligned}
+$
 
 | $\text{Type}$ | $\text{Bit-size}$ | $\text{Byte-size}$ | $\text{Max Value}$ |
 | :------------ | :---------------- | :----------------- | :----------------- |
@@ -99,13 +101,13 @@ $$
 
 The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding $256^n$.
 
-$$
+$
 \begin{aligned}
 w &= \text{width of unsigned integer} \\
-\vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\\space\\
+\vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\
+v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
 \end{aligned} \\
-v =\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
-$$
+$
 
 | `base-10`    | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :----------- | :------ | :------ | :------ | :------ | :------ |
@@ -127,10 +129,12 @@ Memory Pointer
 ```
 #### `Signed Integer`:
 
-$$
-b = \text{Byte Size} \\
-\text{Max Value} = \frac{256^b}{2} - 1
-$$
+$
+\begin{aligned}
+&b = \text{Byte Size} \\
+&\text{Max Value} = \frac{256^b}{2} - 1
+\end{aligned}
+$
 
 | $\text{Type}$ | $\text{Bit-size}$ | $\text{Byte-size}$ | $\text{Max Value}$ |
 | :------------ | :---------------- | :----------------- | :----------------- |
@@ -141,13 +145,13 @@ $$
 
 The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `Unsigned` maximum value.
 
-$$
+$
 \begin{aligned}
 w &= \text{width of signed integer} \\
-\vec{T} &= [x_0][x_1][x_2]...[x_{w-1}] \\\space\\
-\end{aligned} \\
-v = -\vec{T}_{w-1} \cdot 256^{w-1} + \sum_{i=0}^{w-2}\vec{T}_i \cdot 256^i
-$$
+\vec{T} &= [x_0][x_1][x_2]...[x_{w-1}] \\
+v &= -\vec{T}_{w-1} \cdot 256^{w-1} + \sum_{i=0}^{w-2}\vec{T}_i \cdot 256^i
+\end{aligned}
+$
 
 | `base-10`     | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :------------ | :------ | :------ | :------ | :------ | :------ |
@@ -242,38 +246,38 @@ $\text{sign} = (-1)^s$
 
 * Exponent coded as a biased value, dependant on the number of exponent bytes:
 
-$$
+$
 \begin{aligned}
 \vec{e} &= \text{exp}\\
 k &= \text{width of } \vec{e} \\
 bias &= 256^{k - 1} - 1 \\
 E &= \text{uint(}\vec{e}\text{)} - bias
 \end{aligned}
-$$
+$
 
 * Mantissa $M$ coded with implied leading $1$:
 
-$$
+$
 \begin{aligned}
 M  &=  1 + 0.[x]...[x] \\
 \overrightarrow{[x]} &= \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor
 \end{aligned}
-$$
+$
 
-$$
+$
 \begin{aligned}
 &\bullet\space\text{Minimum: frac}=\vec{0}&\implies&M=1.0\\
 &\bullet\space\text{Maximum: frac}=\overrightarrow{255}&\implies&M=2.0-\epsilon
 \end{aligned}
-$$
+$
 
-$$
+$
 \begin{aligned}
 \vec{F} &= \text{frac} \\
 w &= \text{width of }\vec{F} \\
 M &= 1 + \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
 \end{aligned}
-$$
+$
 
 Therefore, the value of a normalized `Float` is calculated as $v$ where:
 
