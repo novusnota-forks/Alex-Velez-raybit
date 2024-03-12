@@ -6,7 +6,7 @@ use std::{
 
 type BaseType = u8;
 
-pub const WORD_SIZE: usize = 2;
+pub const WORD_SIZE: usize = 2; // in bytes (cells)
 
 mod flip_down;
 mod flip_left;
@@ -240,16 +240,10 @@ pub fn get_string(memory: &mut Vec<BaseType>, str_ptr: usize) -> std::ffi::CStri
     // read string array starting at str_ptr to null
     let mut str_bytes: Vec<BaseType> = Vec::new();
     let mut x = 0;
-    loop {
-        if memory[str_ptr + x] == 0 {
-            break;
-        }
+    while memory[str_ptr + x] != 0 {
         str_bytes.push(memory[str_ptr + x]);
         x += 1;
     }
-
-    // turn string vec (i32) into string bytes (u8)
-    // let ascii_bytes: Vec<u8> = str_bytes.iter().map(|&x| x as u8).collect();
 
     // turn string bytes into String
     let ascii_str: String = String::from_utf8_lossy(&str_bytes).to_string();
@@ -316,4 +310,8 @@ pub fn read_file_arg() -> String {
         _ => {}
     }
     args[1].clone()
+}
+
+pub fn f32_to_256_cells(num: f32) -> Vec<BaseType> {
+    unimplemented!();
 }

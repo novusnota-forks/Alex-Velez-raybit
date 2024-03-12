@@ -14,17 +14,24 @@ This interpreter also includes 7 more commands for debugging purposes, `?`, `#`,
 * The memory strip is grown dynamically, thus you must "*explore*" a cell before it can be accessed.
 * This interpreter implements a looping memory pointer (*decrementing from cell 0 to the last cell, or incrementing from the last cell to cell 0`*).
 * This interpreter includes single-line comments with `//`.
-* A <code>&nbsp;</code> (*space*) or `|` character can be used to seperate commands for the interpreter.
+* A <code>&nbsp;</code> (*space*) or `|` character can be used to separate commands for the interpreter.
 * `Panic!` occurs when trying to access invalid memory or an invalid function.
+* The default word size in **BitBit** is 1 byte. However, this can be modified in the compiler. The examples use a word size of 2.
 
 ## Why is Raybit?
 No one asked for this. But... so in conclusion, this will advance the modern world beyond human comprehension!
 
+In all seriousness, this is an experimental hobby project to test interpretation and compilation of a base-256 system within the domains of computer architecture and numerical computation.
+
+As a personal hobby project, at its core, this project extends the boundaries of traditional programming languages by introducing function calls within the framework of **Brainfuck**.
+
+This project focuses on modeling the intricacies of numerical computation as observed in conventional computing systems. **BitBit** is a theoretical exploration of fundamental principles of computer architecture and organization.
+
 ## Commands
 | Command | Functionality                                                               |
 | :-----: | :-------------------------------------------------------------------------- |
-|   `>`   | Increment the memory pointer (moving it to the right 1 cell).               |
-|   `<`   | Decrement the memory pointer (moving it to the left 1 cell).                |
+|   `>`   | Increment the memory pointer right 1 cell.                                  |
+|   `<`   | Decrement the memory pointer left 1 cell.                                   |
 |   `+`   | Increment the value stored at the current cell.                             |
 |   `-`   | Decrement the value stored at the current cell.                             |
 |   `[`   | If the current cell value is zero, then jump forward to the matching `]`.   |
@@ -76,30 +83,39 @@ Memory Pointer
 ### `Integer`:
 `Integer` is actually a class of several types defining an `Integer` of varying byte-sizes. **BitBit** uses `base-256` to represent an `Integer`. `Signed` types use signed 2's complement. `Integer` is stored in big endian order, left-to-right.
 
-#### `Unsigned Integer`
-* `Uint8`:
-	* Bit-size: `8`
-	* Max: `256^1 - 1` = `255`
-* `Uint16`
-	* Bit-size: `16`
-	* Max: `256^2 - 1` = `65535`
-* `Uint24`
-	* Bit-size: `24`
-	* Max: `256^3 - 1` = `16777215`
-* `Uint32`
-	* Bit-size: `32`
-	* Max: `256^4 - 1` = `4294967295`
+#### `Unsigned Integer`:
 
-The value of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding `256^n`.
-| `base-10`  | `256^0` | `256^1` | `256^2` | `256^3` | `256^4` |
-| :--------- | :------ | :------ | :------ | :------ | :------ |
-| 0          | 0       | 0       | 0       | 0       | 0       |
-| 1          | 1       | 0       | 0       | 0       | 0       |
-| 255        | 255     | 0       | 0       | 0       | 0       |
-| 256        | 0       | 1       | 0       | 0       | 0       |
-| 65545      | 9       | 0       | 1       | 0       | 0       |
-| 234897     | 145     | 149     | 3       | 0       | 0       |
-| 4295098368 | 0       | 0       | 2       | 0       | 1       |
+$$
+b = \text{Byte Size} \\
+\text{Max Value} = {256^b} - 1
+$$
+
+| $\text{Type}$ | $\text{Bit-size}$ | $\text{Byte-size}$ | $\text{Max Value}$ |
+| :------------ | :---------------- | :----------------- | :----------------- |
+| `Uint8`       | $8$               | $1$                | $255$              |
+| `Uint16`      | $16$              | $2$                | $65535$            |
+| `Uint24`      | $24$              | $3$                | $16777215$         |
+| `Uint32`      | $32$              | $4$                | $4294967295$       |
+
+The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding $256^n$.
+
+$$
+\begin{aligned}
+w &= \text{width of unsigned integer} \\
+\vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\\space\\
+\end{aligned} \\
+v =\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
+$$
+
+| `base-10`    | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
+| :----------- | :------ | :------ | :------ | :------ | :------ |
+| $0$          | $0$     | $0$     | $0$     | $0$     | $0$     |
+| $1$          | $1$     | $0$     | $0$     | $0$     | $0$     |
+| $255$        | $255$   | $0$     | $0$     | $0$     | $0$     |
+| $256$        | $0$     | $1$     | $0$     | $0$     | $0$     |
+| $65545$      | $9$     | $0$     | $1$     | $0$     | $0$     |
+| $234897$     | $145$   | $149$   | $3$     | $0$     | $0$     |
+| $4295098368$ | $0$     | $0$     | $2$     | $0$     | $1$     |
 
 A `Uint16` value of `65545` at pointer position `2`.
 ```brainfuck
@@ -110,29 +126,38 @@ Memory Cells
 Memory Pointer
 ```
 #### `Signed Integer`:
-* `Int8`:
-	* Bit-size: `8`
-	* Max: `((256^1) / 2) - 1` = `127`
-* `Int16`
-	* Bit-size: `16`
-	* Max: `(256^2) / 2) - 1` = `32767`
-* `Int24`
-	* Bit-size: `24`
-	* Max: `(256^3) / 2) - 1` = `8388607`
-* `Int32`
-	* Bit-size: `32`
-	* Max: `(256^4) / 2) - 1` = `2147483647`
+
+$$
+b = \text{Byte Size} \\
+\text{Max Value} = \frac{256^b}{2} - 1
+$$
+
+| $\text{Type}$ | $\text{Bit-size}$ | $\text{Byte-size}$ | $\text{Max Value}$ |
+| :------------ | :---------------- | :----------------- | :----------------- |
+| `Int8`        | $8$               | $1$                | $127$              |
+| `Int16`       | $16$              | $2$                | $32767$            |
+| `Int24`       | $24$              | $3$                | $8388607$          |
+| `Int32`       | $32$              | $4$                | $2147483647$       |
 
 The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `Unsigned` maximum value.
-| `base-10`   | `256^0` | `256^1` | `256^2` | `256^3` | `256^4` |
-| :---------- | :------ | :------ | :------ | :------ | :------ |
-| 0           | 0       | 0       | 0       | 0       | 0       |
-| 1           | 1       | 0       | 0       | 0       | 0       |
-| -1          | 255     | 255     | 255     | 255     | 255     |
-| -256        | 0       | 255     | 255     | 255     | 255     |
-| -65545      | 247     | 255     | 254     | 255     | 255     |
-| -234897     | 111     | 106     | 252     | 255     | 255     |
-| -4295098368 | 0       | 0       | 254     | 255     | 254     |
+
+$$
+\begin{aligned}
+w &= \text{width of signed integer} \\
+\vec{T} &= [x_0][x_1][x_2]...[x_{w-1}] \\\space\\
+\end{aligned} \\
+v = -\vec{T}_{w-1} \cdot 256^{w-1} + \sum_{i=0}^{w-2}\vec{T}_i \cdot 256^i
+$$
+
+| `base-10`     | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
+| :------------ | :------ | :------ | :------ | :------ | :------ |
+| $0$           | $0$     | $0$     | $0$     | $0$     | $0$     |
+| $1$           | $1$     | $0$     | $0$     | $0$     | $0$     |
+| $-1$          | $255$   | $255$   | $255$   | $255$   | $255$   |
+| $-256$        | $0$     | $255$   | $255$   | $255$   | $255$   |
+| $-65545$      | $247$   | $255$   | $254$   | $255$   | $255$   |
+| $-234897$     | $111$   | $106$   | $252$   | $255$   | $255$   |
+| $-4295098368$ | $0$     | $0$     | $254$   | $255$   | $254$   |
 
 A `Int16` value of `-65545` at pointer position `1`.
 ```brainfuck
@@ -144,18 +169,18 @@ Memory Pointer
 ```
 ### `Float`:
 `Float` is actually a class of several types defining a `Float` of varying byte-sizes and precisions. Floating-point representation encodes rational numbers of  
-the form `v = x * 2^y`. `Float` is useful for performing computations involving very large numbers, `|v| >> 0`, numbers very close to zero, `0 < |v| << 1`, and  
+the form $v = x \cdot 256^y$. `Float` is useful for performing computations involving very large numbers, $|v| >> 0$, numbers very close to zero, $0 < |v| << 1$, and  
 more generally as an approximation to real arithmetic. `Float` vaguely models the `IEEE 754` standard.
 
-##### Numerical Form: `(-1)^s * M * 256^E`  
-* Sign byte `s` determines whether number is negative or positive  
-* Significand `M` normally a fractional value in range `[1.0, 2.0)`
-* Exponent `E` weights value by power of `2`
+##### Numerical Form: $(-1)^s \cdot M \cdot 256^E$  
+* Sign byte $s$ determines whether number is negative or positive  
+* Mantissa $M$ normally a fractional value in range $[1.0, 2.0)$
+* Exponent $E$ weights value by power of $256$
 
 ##### Encoding:  
-* `s` is sign byte `s`  
-* `exp` field encodes `E`  (but is not equal to `E`)  
-* `frac` field encodes `M` (but is not equal to `M`)
+* $\text{s}$ is sign byte $s$
+* $\text{exp}$ field encodes $E\ni\text{exp}\not={E}$
+* $\text{frac}$ field encodes $M\ni\text{frac}\not={M}$
 
 #### `Float24`
 ```brainfuck
@@ -205,30 +230,96 @@ Total Bit Size: 88
 
 ### Calculation of `Float`:
 
-#### Normalized Values: `exp ≠ [0]...[0] & exp ≠ [255]...[255]`
-* Exponent coded as a biased  value:  `E = exp - bias`
-* `bias = 256^(k - 1) - 1`, where k is number of exponent bytes
-* Significand `M` coded with implied leading `1`:  `M  =  [1].[x]...[x]`
-	* `[x][x][x]...[x]`: bytes of `frac`
-	* Minimum when `frac = [0]...[0]` $\rightarrow$ `M = 1.0`
-	* Maximum when `frac = [255]...[255]` $\rightarrow$ `M = 2.0 – ε`
+$$v_{256} = \text{value of floating-point number in base-256}$$
+$$v_{10} = \text{value of floating-point number in base-10}$$
+$$\text{sign} = (-1)^s$$
 
-Therefore, the value of a normalized `Float` is calculated as `v` where:
-`E = exp – bias`
-`v = (–1)^s * M * 256^E` 
-#### Denormalized Values: `exp = [0]...[0]`
-* Exponent coded as: `E = 1 – bias`
-* Significand `M` coded with implied leading `0`:  `M = 0.[x]...[x]` 
-	* `[x][x][x]...[x]`: bytes of `frac`
-* `frac = [0]...[0]`  $\rightarrow$ $v = 0$
-* `frac ≠ [0]...[0]`  $\rightarrow$ $0 < |v| << 1$
+> *Because the sign is determined by a whole cell, this also has the potential to represent several types of abstract numerical values in a single byte for values 2 to 255.*
 
-Therefore, the value of a denormalized `Float` is calculated as `v` where:
-`E = 1 – bias`
-`v = (–1)^s * M * 256^E`
-#### Special Values: `exp = [255]...[255]`
-* `frac = [0]...[0]`  $\rightarrow$ $v = \pm\infty$
-* `frac ≠ [0]...[0]`  $\rightarrow$ $v = NaN$
+#### Normalized Values: $\text{exp}\not={\vec{0}}\And\text{exp}\not={\overrightharpoon{255}}$
+
+* Exponent coded as a biased value, dependant on the number of exponent bytes:
+$$
+\begin{aligned}
+\vec{e} &= \text{exp}\\
+k &= \text{width of } \vec{e} \\
+bias &= 256^{k - 1} - 1 \\
+E &= \text{uint(}\vec{e}\text{)} - bias
+\end{aligned}
+$$
+
+* Mantissa $M$ coded with implied leading $1$:
+
+$$M  =  1 + 0.[x]...[x]$$
+$$\overrightharpoon{[x]} = \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor$$
+
+$$
+\begin{aligned}
+&\bullet\space\text{Minimum: frac} = \vec{0} &\rArr\space &M = 1.0 \\
+&\bullet\space\text{Maximum: frac} = \overrightharpoon{255} &\rArr\space &M = 2.0 \space – \space \epsilon
+\end{aligned} \\\space\\
+
+\vec{F} = \text{frac} \\
+w = \text{width of }\vec{F} \\\space\\
+
+M = 1 + \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
+$$
+
+Therefore, the value of a normalized `Float` is calculated as $v$ where:
+
+$$
+\begin{aligned}
+v_{10} &= (–1)^s \cdot M \cdot 256^E \\\space\\
+v_{10} &= {(–1)^s} \cdot {(1+\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}})} \cdot {256^{(\sum_{i=0}^{|\vec{e}|-1}\vec{e}_i\cdot256^i)-(256^{|\vec{e}|-1}-1)}}
+\end{aligned}
+$$
+
+#### Denormalized Values: $exp = \vec{0}$
+* Exponent is explicitly coded as:
+
+$$
+\begin{aligned}
+\vec{e} &= \text{exp}\\
+k &= \text{width of } \vec{e} \\
+bias &= 256^{k - 1} - 1 \\
+E &= 1 - bias
+\end{aligned}
+$$
+
+* Mantissa $M$ coded with implied leading $0$:
+
+$$M = 0.[x]...[x]$$
+$$\overrightharpoon{[x]} = \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor$$
+
+$$
+\begin{aligned}
+&\bullet\space\text{frac}=\vec{0} &\rArr\space &v_{10} = 0 \\
+&\bullet\space\text{frac}\not=\vec{0} &\rArr\space &|v_{10}| \in (0, 1) \space
+\end{aligned} \\\space\\
+
+\vec{F} = \text{frac} \\
+w = \text{width of }\vec{F} \\\space\\
+
+M = \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
+$$
+
+Therefore, the value of a denormalized `Float` is calculated as $v$ where:
+
+$$
+\begin{aligned}
+v_{10} &= (–1)^s \cdot M \cdot 256^E \\\space\\
+v_{10} &= {(–1)^s} \cdot {(\sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^{i}})} \cdot {256^{(1-(256^{|\vec{e}|-1}-1))}}
+\end{aligned}
+$$
+
+#### Special Values: $\text{exp} = \overrightharpoon{255}$
+
+$$
+\begin{aligned}
+&\text{frac}=\vec{0} &\rArr\space &v_{10} = \pm\infty \\
+&\text{frac}\not=\vec{0} &\rArr\space &v_{10} = NaN \space
+\end{aligned}
+$$
 
 ### `Structs`:
 A `Struct` is simply defined as a collection of fields. It consists of an array containing its fields in order. The fields are a `Pointer` to the data, except for `Boolean` and `Uint8` as those can be stored in the field cells directly. Therefore, with the default word size, `2` (16-bit), all fields require `2` cells to store each `Pointer` or value.

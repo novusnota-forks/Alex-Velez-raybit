@@ -421,7 +421,7 @@ unsafe fn set_window_max_size(memory: &mut Vec<BaseType>, pointer: usize) -> Opt
     let input_cells = crate::get_input_cells(memory, pointer, 4);
     let width = crate::cells_to_unsigned(&input_cells[0..2]);
     let height = crate::cells_to_unsigned(&input_cells[2..4]);
-    // raylib::ffi::SetWindowMinSize(width as i32, height as i32);
+    // raylib::ffi::SetWindowMaxSize(width as i32, height as i32);
     unimplemented!()
 }
 
@@ -456,14 +456,14 @@ unsafe fn get_window_handle(_memory: &mut Vec<BaseType>, _pointer: usize) -> Opt
 
 /// Get current screen width
 unsafe fn get_screen_width(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
-    raylib::ffi::GetScreenWidth();
-    None
+    // [width][@]
+    Some(vec![raylib::ffi::GetScreenWidth() as BaseType])
 }
 
 /// Get current screen height
 unsafe fn get_screen_height(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
-    raylib::ffi::GetScreenHeight();
-    None
+    // [height][@]
+    Some(vec![raylib::ffi::GetScreenHeight() as BaseType])
 }
 
 /// Get current render width (it considers HiDPI)
@@ -478,8 +478,8 @@ unsafe fn get_render_height(_memory: &mut Vec<BaseType>, _pointer: usize) -> Opt
 
 /// Get number of connected monitors
 unsafe fn get_monitor_count(_memory: &mut Vec<BaseType>, _pointer: usize) -> Option<Vec<BaseType>> {
-    raylib::ffi::GetMonitorCount();
-    None
+    // [monitor_count][@]
+    Some(vec![raylib::ffi::GetMonitorCount() as BaseType])
 }
 
 /// Get current connected monitor
@@ -487,8 +487,8 @@ unsafe fn get_current_monitor(
     _memory: &mut Vec<BaseType>,
     _pointer: usize,
 ) -> Option<Vec<BaseType>> {
-    raylib::ffi::GetCurrentMonitor();
-    None
+    // [monitor_index][@]
+    Some(vec![raylib::ffi::GetCurrentMonitor() as BaseType])
 }
 
 /// Get specified monitor position
@@ -496,6 +496,13 @@ unsafe fn get_monitor_position(
     memory: &mut Vec<BaseType>,
     pointer: usize,
 ) -> Option<Vec<BaseType>> {
+    // [pos.y][pos.y][pos.x][pos.x][@][index][index]
+    let input_cells = crate::get_input_cells(memory, pointer, 2);
+    let index = crate::cells_to_unsigned_u16(&input_cells);
+    let pos = raylib::ffi::GetMonitorPosition(index as i32);
+    let x = pos.x;
+
+    // Some(vec![raylib::ffi::GetMonitorPosition(index) as BaseType])
     unimplemented!()
 }
 
