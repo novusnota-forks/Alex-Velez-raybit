@@ -280,16 +280,21 @@ Therefore, the value of a normalized `Float` is calculated as $v$ where:
 $$
 \begin{aligned}
 v_{10} &= (–1)^s \cdot M \cdot 256^E \\
-v_{10} &= {(–1)^s}
-\cdot {
-    (1 + \sum_{i=1}^{|\vec{F}|-1}\frac{\vec{F}_{i-1}}{256^i})
+v_{10} &= (–1)^s
+\cdot 
+(
+    1 +
+    \sum_{i=1}^{|\vec{F}|-1}
+    \frac{\vec{F}_{i-1}}{256^i}
+)
+\cdot 
+256^{
+    (
+        \sum_{i=0}^{|\vec{e}|-1}
+        \vec{e}_i \cdot 256^i
+    )
+    -(256^{|\vec{e}|-1} - 1)
 }
-% \cdot {
-%     256^{
-%         (\sum_{i=0}^{|\vec{e}|-1}{\vec{e}_i \cdot 256^i})
-%         -(256^{|\vec{e}|-1} - 1)
-%     }
-% }
 \end{aligned}
 $$
 
