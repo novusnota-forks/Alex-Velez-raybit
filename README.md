@@ -102,7 +102,7 @@ $$
 \begin{aligned}
 w &= \text{width of unsigned integer} \\
 \vec{U} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
-v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
+v &=\sum_{i=0}^{w - 1}\left(\vec{U}_i \cdot 256^i \right)
 \end{aligned}
 $$
 
@@ -143,7 +143,7 @@ $$
 \begin{aligned}
 w &= \text{width of signed integer} \\
 \vec{T} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
-v &= -\vec{T}_{w-1} \cdot 256^{w-1} + \sum_{i=0}^{w - 2} \vec{T}_i \cdot 256^i
+v &= -\vec{T}_{w-1} \cdot 256^{w-1} + \sum_{i=0}^{w - 2}\left(\vec{T}_i \cdot 256^i\right)
 \end{aligned}
 $$
 
