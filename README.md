@@ -113,13 +113,13 @@ v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
 \end{aligned}
 $$
 
-$
-\begin{aligned}
-&sin⁡(α) = {opposite \over hypotenuse} = {h0 \over c} = {h2 \over b} \\
-&cos(α) = {adjacent \over hypotenuse} = {b \over c} = {d \over b} \\
-&tan⁡(α) = {opposite \over adjacent} = {h0 \over b} = {h2 \over d}
-\end{aligned}
-$
+$$
+\begin{alignat*}{4}
+& sin⁡(α) &&= {opposite \over hypotenuse} &&= {h0 \over c} &&= {h2 \over b} \\
+& cos(α) &&= {adjacent \over hypotenuse} &&= {b \over c}  &&= {d \over b} \\
+& tan⁡(α) &&= {opposite \over adjacent}   &&= {h0 \over b} &&= {h2 \over d}
+\end{alignat*}
+$$
 
 
 | `base-10`    | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
