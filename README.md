@@ -172,7 +172,7 @@ more generally as an approximation to real arithmetic. `Float` vaguely models th
 
 ##### Numerical Form: $(-1)^s \cdot M \cdot 256^E$  
 * Sign byte $s$ determines whether number is negative or positive  
-* Mantissa $M$, normally a fractional value, $\in[1.0, 2.0)$
+* Mantissa $M$ a fractional value $\in[1.0, 2.0)$
 * Exponent $E$ weights value by power of $256$
 
 ##### Encoding:  
@@ -240,14 +240,14 @@ $\text{sign} = (-1)^s$
 
 * Exponent coded as a biased value, dependant on the number of exponent bytes:
 
-$
+```math
 \begin{aligned}
 \vec{e} &= \text{exp}\\
 k &= \text{width of } \vec{e} \\
 bias &= 256^{k - 1} - 1 \\
 E &= \text{uint(}\vec{e}\text{)} - bias
 \end{aligned}
-$
+```
 
 * Mantissa $M$ coded with implied leading $1$:
 
