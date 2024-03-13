@@ -251,27 +251,27 @@ E &= \text{uint(}\vec{e}\text{)} - bias
 
 * Mantissa $M$ coded with implied leading $1$:
 
-$
+```math
 \begin{aligned}
 M  &=  1 + 0.[x]...[x] \\
 \overrightarrow{[x]} &= \text{frac} \rightarrow v_{10} - \lfloor v_{10} \rfloor
 \end{aligned}
-$
+```
 
-$
+```math
 \begin{aligned}
 &\bullet\space\text{Minimum: frac}=\vec{0}&\implies&M=1.0\\
 &\bullet\space\text{Maximum: frac}=\overrightarrow{255}&\implies&M=2.0-\epsilon
 \end{aligned}
-$
+```
 
-$
+```math
 \begin{aligned}
 \vec{F} &= \text{frac} \\
 w &= \text{width of }\vec{F} \\
 M &= 1 + \sum_{i=1}^{w - 1}\frac{\vec{F}_{i-1}}{256^{i}}
 \end{aligned}
-$
+```
 
 Therefore, the value of a normalized `Float` is calculated as $v$ where:
 
