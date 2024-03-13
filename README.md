@@ -139,15 +139,19 @@ $\text{Max Value} = \frac{256^b}{2} - 1$
 
 The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `Unsigned` maximum value.
 
-$$
+```math
 \begin{aligned}
 w &= \text{width of signed integer} \\
 \vec{T} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
 v &= \sum_{i=0}^{w-2}{\left(\vec{T}_i \cdot 256^i\right)} - \left( \vec{T}_{w-1} \cdot 256^{w-1} \right)
 \end{aligned}
-$$
+```
 
 $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
+
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
 
 | `base-10`     | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :------------ | :------ | :------ | :------ | :------ | :------ |
