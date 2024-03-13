@@ -143,11 +143,11 @@ $$
 \begin{aligned}
 w &= \text{width of signed integer} \\
 \vec{T} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
-v &= \sum_{i=0}^{w-2}{\left(\vec{T}_i \cdot 256^i\right)}
+v &= \sum_{i=0}^{w-2}{\left(\vec{T}_i \cdot 256^i\right)} + \left(-\vec{T}_{w-1} \cdot 256^{w-1}\right)
 \end{aligned}
 $$
 
-<!-- \left( -\vec{T}_{w-1} \cdot 256^{w-1} \right) +  -->
+<!-- \left(-\vec{T}_{w-1} \cdot 256^{w-1}\right) +  -->
 
 | `base-10`     | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :------------ | :------ | :------ | :------ | :------ | :------ |
