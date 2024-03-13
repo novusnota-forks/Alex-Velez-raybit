@@ -98,13 +98,13 @@ $\text{Max Value} = {256^b} - 1$
 
 The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding $256^n$.
 
-$$
+```math
 \begin{aligned}
 w &= \text{width of unsigned integer} \\
 \vec{U} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
 v &=\sum_{i=0}^{w - 1}\left(\vec{U}_i \cdot 256^i \right)
 \end{aligned}
-$$
+```
 
 | `base-10`    | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :----------- | :------ | :------ | :------ | :------ | :------ |
@@ -172,7 +172,7 @@ more generally as an approximation to real arithmetic. `Float` vaguely models th
 
 ##### Numerical Form: $(-1)^s \cdot M \cdot 256^E$  
 * Sign byte $s$ determines whether number is negative or positive  
-* Mantissa $M$ normally a fractional value in range $[1.0, 2.0)$
+* Mantissa $M$, normally a fractional value, $\in[1.0, 2.0)$
 * Exponent $E$ weights value by power of $256$
 
 ##### Encoding:  
