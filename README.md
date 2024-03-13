@@ -106,7 +106,7 @@ $$
 
 w &= \text{width of unsigned integer} \\
 
-\vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\
+% \vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\
 
 v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
 
