@@ -143,7 +143,7 @@ $$
 \begin{aligned}
 w &= \text{width of signed integer} \\
 \vec{T} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
-v &= \sum_{i=0}^{w-2}{\left(\vec{T}_i \cdot 256^i\right)} - \left(\vec{T}_{w}\right)
+v &= \sum_{i=0}^{w-2}{\left(\vec{T}_i \cdot 256^i\right)} - \left(\right)
 \end{aligned}
 $$
 
