@@ -104,11 +104,11 @@ The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the s
 $$
 \begin{aligned}
 w &= \text{width of unsigned integer} \\
+\vec{U} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]...\left[x_{w-1}\right] \\
 v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
 \end{aligned}
 $$
 
-<!-- % \vec{U} &= [x_0][x_1][x_2]...[x_{w-1}] \\ -->
 
 $$
 \begin{alignat*}{4}
