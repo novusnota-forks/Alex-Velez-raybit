@@ -275,7 +275,7 @@ $$
 
 Therefore, the value of a normalized `Float` is calculated as $v$ where:
 
-$$
+```math
 \begin{aligned}
 v_{10} &= (–1)^s \cdot M \cdot 256^E \\
 v_{10} &= (–1)^s
@@ -294,7 +294,7 @@ v_{10} &= (–1)^s
     -(256^{|\vec{e}|-1} - 1)
 }
 \end{aligned}
-$$
+```
 
 #### Denormalized Values: $exp = \vec{0}$
 * Exponent is explicitly coded as:
