@@ -103,7 +103,7 @@ The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the s
 
 $$
 \begin{aligned}
-w &= \text{width of unsigned integer}
+w &= \text{width of unsigned integer} \\
 v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
 \end{aligned}
 $$
