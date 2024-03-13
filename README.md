@@ -98,8 +98,13 @@ $\text{Max Value} = {256^b} - 1$
 
 The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding $256^n$.
 
-$\begin{aligned}&w = \text{width of unsigned integer} \\&\vec{U} = \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\&v =\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i\end{aligned}$
-
+$$
+\begin{aligned}
+w &= \text{width of unsigned integer} \\
+\vec{U} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
+v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
+\end{aligned}
+$$
 
 | `base-10`    | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :----------- | :------ | :------ | :------ | :------ | :------ |
@@ -134,13 +139,13 @@ $\text{Max Value} = \frac{256^b}{2} - 1$
 
 The value of a negative `Signed Integer` to a decimal base is calculated by adding it to the corresponding `Unsigned` maximum value.
 
-$
+$$
 \begin{aligned}
 w &= \text{width of signed integer} \\
-\vec{T} &= [x_0][x_1][x_2]...[x_{w-1}] \\
+\vec{T} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
 v &= -\vec{T}_{w-1} \cdot 256^{w-1} + \sum_{i=0}^{w-2}\vec{T}_i \cdot 256^i
 \end{aligned}
-$
+$$
 
 | `base-10`     | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
 | :------------ | :------ | :------ | :------ | :------ | :------ |
