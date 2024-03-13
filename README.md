@@ -1,6 +1,3 @@
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 # Raybit!
 
 The official (*non-official*) **Brainfuck** bindings for **Raylib**!
@@ -101,22 +98,21 @@ $\text{Max Value} = {256^b} - 1$
 
 The value, $v$ of an `Unsigned Integer` to a decimal base is calculated by the sum of each digit in the `Integer` multiplied with its corresponding $256^n$.
 
+$$
+\begin{aligned}
+&w = \text{width of unsigned integer} \\
+&\vec{U} = \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
+&v =\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
+\end{aligned}
+$$
+
 $
 \begin{aligned}
-w &= \text{width of unsigned integer} \\
-\vec{U} &= \left[x_0\right]\left[x_1\right]\left[x_2\right]\dots\left[x_{w-1}\right] \\
-v &=\sum_{i=0}^{w - 1} \vec{U}_i \cdot 256^i
+&sin⁡(α) = {opposite \over hypotenuse} = {h0 \over c} = {h2 \over b} \\
+&cos(α) = {adjacent \over hypotenuse} = {b \over c} = {d \over b} \\
+&tan⁡(α) = {opposite \over adjacent} = {h0 \over b} = {h2 \over d}
 \end{aligned}
 $
-
-
-$$
-\begin{alignat*}{4}
-& sin⁡(α) &&= {opposite \over hypotenuse} &&= {h0 \over c} &&= {h2 \over b} \\
-& cos(α) &&= {adjacent \over hypotenuse} &&= {b \over c}  &&= {d \over b} \\
-& tan⁡(α) &&= {opposite \over adjacent}   &&= {h0 \over b} &&= {h2 \over d}
-\end{alignat*}
-$$
 
 
 | `base-10`    | $256^0$ | $256^1$ | $256^2$ | $256^3$ | $256^4$ |
